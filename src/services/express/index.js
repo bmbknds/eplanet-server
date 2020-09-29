@@ -1,0 +1,38 @@
+import express from "express";
+import forceSSL from "express-force-ssl";
+import cors from "cors";
+import compression from "compression";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import { errorHandler as queryErrorHandler } from "querymen";
+import { errorHandler as bodyErrorHandler } from "bodymen";
+import { env } from "../../config";
+
+export default (apiRoot, routes) => {
+  const app = express();
+
+  /* istanbul ignore next */
+  if (env === "production") {
+    app.set("forceSSLOptions", {
+      enable301Redirects: false,
+      trustXFPHeader: true,
+    });
+    app.use(forceSSL);
+  }
+
+  /* istanbul ignore next */
+  if (env === "production" || env === "development") {
+    app.use(cors());
+    app.use(compression());
+    app.use(morgan("dev"));
+  }
+
+  app.use(bodyParser.urlencoded({ extended: false, limit: "5MB" }));
+  app.use(bodyParser.json({ limit: "5MB" }));
+  app.use(apiRoot, routes);
+  app.use(queryErrorHandler());
+  app.use(bodyErrorHandler());
+  app.use("/", express.static(__dirname + "/../../../assets"));
+
+  return app;
+};
