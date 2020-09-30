@@ -14,6 +14,15 @@ var storage = multer.diskStorage({
     cb(null, req.params.id + "-" + Date.now() + ".png");
   },
 });
+var fileStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `assets/files`);
+  },
+  filename: function (req, file, cb) {
+    console.log(file);
+    cb(null, req.params.id + "-" + Date.now() + file.originalname);
+  },
+});
 var upload = multer({ storage: storage });
 
 const router = new Router();
@@ -31,7 +40,10 @@ const router = new Router();
  */
 router.post(
   "/image/:id",
-  token({ required: true, roles: ["admin", "super-admin"] }),
+  token({
+    required: true,
+    roles: ["admin", "teacher", "super-admin", "student"],
+  }),
   upload.single("image"),
   create
 );
@@ -47,6 +59,23 @@ router.post(
  * @apiError 404 File upload not found.
  * @apiError 401 admin access only.
  */
-router.get("/:id", token({ required: true, roles: ["admin"] }), show);
+router.get(
+  "/:id",
+  token({
+    required: true,
+    roles: ["admin", "teacher", "super-admin", "student"],
+  }),
+  show
+);
+
+router.post(
+  "/file/:id",
+  token({
+    required: true,
+    roles: ["admin", "teacher", "super-admin", "student"],
+  }),
+  multer({ storage: fileStorage }).single("file"),
+  create
+);
 
 export default router;
