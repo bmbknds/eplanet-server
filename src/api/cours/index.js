@@ -2,7 +2,7 @@ import { Router } from "express";
 import { middleware as query } from "querymen";
 import { middleware as body } from "bodymen";
 import { token } from "../../services/passport";
-import { create, index, show, update, destroy } from "./controller";
+import { create, index, show, update, destroy, getPublic } from "./controller";
 import { schema } from "./model";
 export Cours, { schema } from "./model";
 
@@ -41,6 +41,8 @@ const {
  * @apiError 404 Cours not found.
  * @apiError 401 admin access only.
  */
+router.get("/public", getPublic);
+
 router.post(
   "/",
   token({ required: true, roles: ["admin", "super-admin"] }),

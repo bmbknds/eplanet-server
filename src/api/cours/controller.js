@@ -38,3 +38,10 @@ export const destroy = ({ params }, res, next) =>
     .then((cours) => (cours ? cours.remove() : null))
     .then(success(res, 204))
     .catch(next);
+
+export const getPublic = (req, res, next) =>
+  Cours.find({ status: "active" })
+    .sort({ createdAt: -1 })
+    .then((cours) => cours.map((cours) => cours.view()))
+    .then(success(res))
+    .catch(next);
