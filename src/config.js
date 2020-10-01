@@ -41,7 +41,7 @@ const config = {
   test: {},
   development: {
     mongo: {
-      uri: "mongodb://localhost/e-planet-dev",
+      uri: process.env.MONGODB_URI || "mongodb://localhost/e-planet",
       options: {
         debug: true,
       },
