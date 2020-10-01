@@ -8,7 +8,11 @@ const app = express(apiRoot, api);
 const server = http.createServer(app);
 
 if (mongo.uri) {
-  mongoose.connect(mongo.uri, { autoIndex: false });
+  mongoose.connect(mongo.uri, {
+    autoIndex: false,
+    user: mongo.user,
+    pass: mongo.password,
+  });
 }
 mongoose.Promise = Promise;
 
