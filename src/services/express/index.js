@@ -32,7 +32,7 @@ export default (apiRoot, routes) => {
   app.use(apiRoot, routes);
   app.use(queryErrorHandler());
   app.use(bodyErrorHandler());
-  app.use("/", express.static(__dirname + "/../../../assets"));
+  app.use("/api", express.static(__dirname + "/../../../assets"));
 
   return app;
 };
