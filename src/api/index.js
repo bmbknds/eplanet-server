@@ -5,6 +5,7 @@ import passwordReset from "./password-reset";
 import cours from "./cours";
 
 import fileUpload from "./file-upload";
+import order from './order'
 
 const router = new Router();
 
@@ -37,5 +38,6 @@ router.use("/password-resets", passwordReset);
 router.use("/cours", cours);
 
 router.use("/file-uploads", fileUpload);
+router.use('/orders', order)
 
 export default router;

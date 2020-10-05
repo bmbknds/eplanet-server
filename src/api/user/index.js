@@ -44,7 +44,10 @@ const {
  */
 router.post(
   "/list",
-  token({ required: true, roles: ["admin", "super-admin"] }),
+  // token({
+  //   required: true,
+  //   roles: ["admin", "super-admin", "student", "teacher"],
+  // }),
 
   index
 );
