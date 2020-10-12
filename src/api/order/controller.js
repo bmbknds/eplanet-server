@@ -44,7 +44,7 @@ export const getBookedSlot = ({ body }, res, next) => {
     .then((orders) => {
       let bookedSlot = [];
       orders.forEach((element) => {
-        bookedSlot = [...bookedSlot, element.timeTable];
+        bookedSlot = [...bookedSlot, ...element.timeTable];
       });
       return bookedSlot;
     })
