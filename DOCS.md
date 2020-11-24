@@ -8,8 +8,21 @@
 - [Cours](#cours)
 	- [Create cours](#create-cours)
 	- [Delete cours](#delete-cours)
+	- [Retrieve cour](#retrieve-cour)
+	- [Get Public Courses](#get-public-courses)
 	- [Retrieve cours](#retrieve-cours)
 	- [Update cours](#update-cours)
+	
+- [FileUpload](#fileupload)
+	- [Create file upload](#create-file-upload)
+	- [Retrieve file upload](#retrieve-file-upload)
+	
+- [Order](#order)
+	- [Create order](#create-order)
+	- [Delete order](#delete-order)
+	- [Retrieve order](#retrieve-order)
+	- [Retrieve orders](#retrieve-orders)
+	- [Update order](#update-order)
 	
 - [PasswordReset](#passwordreset)
 	- [Send email](#send-email)
@@ -85,6 +98,36 @@
 |---------|-----------|--------------------------------------|
 | access_token			| String			|  <p>admin access token.</p>							|
 
+## Retrieve cour
+
+
+
+	GET /cours/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+
+## Get Public Courses
+
+
+
+	GET /cours/public
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
 ## Retrieve cours
 
 
@@ -125,6 +168,101 @@
 | price			| 			|  <p>Cours's price.</p>							|
 | lessons			| 			|  <p>Cours's lessons.</p>							|
 | status			| 			|  <p>Cours's status.</p>							|
+
+# FileUpload
+
+## Create file upload
+
+
+
+	POST /file-uploads
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+
+## Retrieve file upload
+
+
+
+	GET /file-uploads/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+
+# Order
+
+## Create order
+
+
+
+	POST /orders
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| studentId			| 			|  <p>Order's studentId.</p>							|
+| teacherId			| 			|  <p>Order's teacherId.</p>							|
+| timeTable			| 			|  <p>Order's timeTable.</p>							|
+| coursId			| 			|  <p>Order's coursId.</p>							|
+| records			| 			|  <p>Order's records.</p>							|
+
+## Delete order
+
+
+
+	DELETE /orders/:id
+
+
+## Retrieve order
+
+
+
+	GET /orders/:id
+
+
+## Retrieve orders
+
+
+
+	GET /orders
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+## Update order
+
+
+
+	PUT /orders/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| studentId			| 			|  <p>Order's studentId.</p>							|
+| teacherId			| 			|  <p>Order's teacherId.</p>							|
+| timeTable			| 			|  <p>Order's timeTable.</p>							|
+| coursId			| 			|  <p>Order's coursId.</p>							|
+| records			| 			|  <p>Order's records.</p>							|
 
 # PasswordReset
 

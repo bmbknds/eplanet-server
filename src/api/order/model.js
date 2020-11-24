@@ -19,8 +19,30 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
+    price: {
+      type: Number,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      default: new Date(),
+    },
+
     records: {
       type: Array,
+    },
+    status: {
+      type: String,
+      enum: ["deleted", "pending", "active", "cancel"],
+      default: "pending",
+    },
+    hasTrial: {
+      type: Boolean,
+      default: false,
+    },
+    paid: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -57,6 +79,24 @@ orderSchema.methods = {
   },
 };
 orderSchema.set("collection", "orders");
+orderSchema.virtual("student", {
+  ref: "User",
+  localField: "studentId",
+  foreignField: "_id",
+  justOne: true,
+});
+orderSchema.virtual("teacher", {
+  ref: "User",
+  localField: "teacherId",
+  foreignField: "_id",
+  justOne: true,
+});
+orderSchema.virtual("cours", {
+  ref: "Cours",
+  localField: "coursId",
+  foreignField: "_id",
+  justOne: true,
+});
 const model = mongoose.model("Order", orderSchema);
 
 export const schema = model.schema;

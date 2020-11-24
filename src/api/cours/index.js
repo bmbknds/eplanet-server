@@ -21,6 +21,18 @@ const {
 } = schema.tree;
 
 /**
+ * @api {get} /cours/public Get Public Courses
+ * @apiName GetPublicCourse ( for guess )
+ * @apiGroup Cours
+
+ * @apiUse listParams
+ * @apiSuccess {Object[]} cours List of cours.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 admin access only.
+ */
+
+router.get("/public", getPublic);
+/**
  * @api {post} /cours Create cours
  * @apiName CreateCours
  * @apiGroup Cours
@@ -41,8 +53,6 @@ const {
  * @apiError 404 Cours not found.
  * @apiError 401 admin access only.
  */
-router.get("/public", getPublic);
-
 router.post(
   "/",
   token({ required: true, roles: ["admin", "super-admin"] }),
@@ -80,8 +90,8 @@ router.get(
 );
 
 /**
- * @api {get} /cours/:id Retrieve cours
- * @apiName RetrieveCours
+ * @api {get} /cours/:id Retrieve cour
+ * @apiName Detail Cours
  * @apiGroup Cours
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.

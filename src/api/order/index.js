@@ -8,12 +8,21 @@ import {
   update,
   destroy,
   getBookedSlot,
+  getPendingForAdmin,
 } from "./controller";
 import { schema } from "./model";
 export Order, { schema } from "./model";
 
 const router = new Router();
-const { studentId, teacherId, timeTable, coursId, records } = schema.tree;
+const {
+  studentId,
+  teacherId,
+  timeTable,
+  coursId,
+  records,
+  status,
+  paid,
+} = schema.tree;
 
 /**
  * @api {post} /orders Create order
@@ -42,7 +51,7 @@ router.post(
  * @apiSuccess {Object[]} orders List of orders.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get("/", query(), index);
+router.post("/list", index);
 
 /**
  * @api {get} /orders/:id Retrieve order
@@ -69,7 +78,7 @@ router.get("/:id", show);
  */
 router.put(
   "/:id",
-  body({ studentId, teacherId, timeTable, coursId, records }),
+  // body({ studentId, teacherId, coursId, timeTable,  records, status, paid }),
   update
 );
 
@@ -99,6 +108,25 @@ router.post(
   "/getBookedSlot",
   // body({ studentId, teacherId, timeTable, coursId, records }),
   getBookedSlot
+);
+
+/**
+ * @api {post} /orders Create order
+ * @apiName CreateOrder
+ * @apiGroup Order
+ * @apiParam studentId Order's studentId.
+ * @apiParam teacherId Order's teacherId.
+ * @apiParam timeTable Order's timeTable.
+ * @apiParam coursId Order's coursId.
+ * @apiParam records Order's records.
+ * @apiSuccess {Object} order Order's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 Order not found.
+ */
+router.post(
+  "/get-pending-for-admin",
+  // gbody({ studentId, teacherId, timeTable, coursId, records }),
+  getPendingForAdmin
 );
 
 export default router;
