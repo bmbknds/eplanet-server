@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { login } from "./controller";
+import { login, getMenu } from "./controller";
 import { password, master } from "../../services/passport";
+import { token } from "../../services/passport";
 
 const router = new Router();
 
@@ -16,5 +17,18 @@ const router = new Router();
  * @apiError 401 Master access only or invalid credentials.
  */
 router.post("/login", password(), login);
+
+/**
+ * @api {post} /auth/login Authenticate
+ * @apiName Authenticate
+ * @apiGroup Auth
+ * @apiPermission master
+ * @apiHeader {String} Authorization Basic authorization with email and password.
+ * @apiParam {String} access_token Master access_token.
+ * @apiSuccess (Success 201) {String} token User `access_token` to be passed to other requests.
+ * @apiSuccess (Success 201) {Object} user Current user's data.
+ * @apiError 401 Master access only or invalid credentials.
+ */
+router.post("/getmenu", token({ required: true }), getMenu);
 
 export default router;

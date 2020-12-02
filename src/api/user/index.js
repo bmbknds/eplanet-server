@@ -42,8 +42,9 @@ const {
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Admin access only.
  */
-router.post(
+router.get(
   "/list",
+  query({ role }),
   // token({
   //   required: true,
   //   roles: ["admin", "super-admin", "student", "teacher"],

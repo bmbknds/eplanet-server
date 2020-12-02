@@ -3,9 +3,9 @@ import { User } from ".";
 import { sign } from "../../services/jwt";
 import { pickBy, identity } from "lodash";
 
-export const index = (req, res, next) => {
-  const { filter } = req.body;
-  return User.find(filter)
+export const index = ({ querymen: { query, select, cursor } }, res, next) => {
+  // const { filter } = req.body;
+  return User.find(query, select, cursor)
     .then((users) => users.map((user) => user.view()))
     .then(success(res))
     .catch(next);

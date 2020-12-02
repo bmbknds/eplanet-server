@@ -1,7 +1,8 @@
 import { success, notFound } from "../../services/response/";
 import { Cours } from ".";
 import { pickBy, identity } from "lodash";
-
+import { checkInUse } from "../../utils/index";
+import mongoose from "mongoose";
 export const create = ({ bodymen: { body } }, res, next) =>
   Cours.create(body)
     .then((cours) => cours.view(true))
@@ -32,12 +33,43 @@ export const update = ({ bodymen: { body }, params }, res, next) => {
     .catch(next);
 };
 
-export const destroy = ({ params }, res, next) =>
+export const destroy = async ({ params }, res, next) => {
   Cours.findById(params.id)
     .then(notFound(res))
-    .then((cours) => (cours ? cours.remove() : null))
+    .then(async (cours) => {
+      const isInUse = await checkInUse([
+        {
+          name: "Order",
+          fields: [
+            {
+              name: "coursId",
+              value: mongoose.Types.ObjectId(params.id),
+            },
+          ],
+        },
+      ]);
+      console.log(isInUse);
+      if (!isInUse) {
+        // return true;
+        return cours.remove();
+      } else {
+        res
+          .status(500)
+          .json({ code: 403, message: "Delete failed. Cours is using!" })
+          .end();
+        return null;
+      }
+    })
+
     .then(success(res, 204))
+
     .catch(next);
+};
+// Cours.findById(params.id)
+//   .then(notFound(res))
+//   .then((cours) => (cours ? cours.remove() : null))
+//   .then(success(res, 204))
+//   .catch(next);
 
 export const getPublic = (req, res, next) =>
   Cours.find({ status: "active" })

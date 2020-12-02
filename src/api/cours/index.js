@@ -85,7 +85,13 @@ router.post(
 router.get(
   "/",
   token({ required: true, roles: ["admin", "super-admin"] }),
-  query(),
+  query({
+    name: {
+      type: RegExp,
+      operator: "$regex",
+      normalize: true,
+    },
+  }),
   index
 );
 
@@ -102,7 +108,7 @@ router.get(
  */
 router.get(
   "/:id",
-  token({ required: true, roles: ["admin", "super-admin"] }),
+  // token({ required: true, roles: ["admin", "super-admin"] }),
   show
 );
 
