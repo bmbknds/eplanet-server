@@ -48,8 +48,8 @@ router.get(
     role,
     name: {
       type: RegExp,
-      operator: "$regex",
-      normalize: true,
+
+      paths: ["name"],
     },
   }),
   // token({
