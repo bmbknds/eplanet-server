@@ -28,12 +28,23 @@ export const create = ({ bodymen: { body } }, res, next) =>
         .then(success(res, 201));
     })
     .catch((err) => {
+      console.log(err.errors);
       /* istanbul ignore else */
-      if (err.name === "MongoError" && err.code === 11000) {
+      if (err.errors) {
+        let message = "";
+        Object.keys(err.errors).forEach((item) => {
+          if (item === "email") {
+            message = message + "Email already registered. \n ";
+          }
+          if (item === "phoneNumber") {
+            message = message + "Phone number already registered. \n ";
+          }
+        });
+
         res.status(409).json({
           valid: false,
           param: "email",
-          message: "email already registered",
+          message,
         });
       } else {
         next(err);

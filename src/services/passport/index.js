@@ -31,7 +31,6 @@ export const token = ({ required, roles = User.roles } = {}) => (
   res,
   next
 ) => {
-  console.log(req.logIn);
   return passport.authenticate(
     "token",
     { session: false },
@@ -41,6 +40,9 @@ export const token = ({ required, roles = User.roles } = {}) => (
         (required && !user) ||
         (required && !~roles.indexOf(user.role))
       ) {
+        if (roles.indexOf(user.role) === -1) {
+          return res.status(403).end();
+        }
         return res.status(401).end();
       }
       req.logIn(user, { session: false }, (err) => {

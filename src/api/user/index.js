@@ -44,7 +44,14 @@ const {
  */
 router.get(
   "/list",
-  query({ role }),
+  query({
+    role,
+    name: {
+      type: RegExp,
+      operator: "$regex",
+      normalize: true,
+    },
+  }),
   // token({
   //   required: true,
   //   roles: ["admin", "super-admin", "student", "teacher"],
@@ -157,6 +164,10 @@ router.put("/:id/password", passwordAuth(), body({ password }), updatePassword);
  * @apiError 401 Admin access only.
  * @apiError 404 User not found.
  */
-router.delete("/:id", token({ required: true, roles: ["admin"] }), destroy);
+router.delete(
+  "/:id",
+  token({ required: true, roles: ["admin", "super-admin"] }),
+  destroy
+);
 
 export default router;

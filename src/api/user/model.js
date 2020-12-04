@@ -2,6 +2,7 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import mongoose, { Schema } from "mongoose";
 import mongooseKeywords from "mongoose-keywords";
+import uniqueValidator from "mongoose-unique-validator";
 import { env } from "../../config";
 
 const roles = ["student", "admin", "super-admin", "teacher"];
@@ -16,6 +17,13 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
     password: {
       type: String,
       required: true,
@@ -23,6 +31,7 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
+
       index: true,
       trim: true,
     },
@@ -37,11 +46,6 @@ const userSchema = new Schema(
     },
     skype: {
       type: String,
-      trim: true,
-    },
-    phoneNumber: {
-      type: String,
-      unique: true,
       trim: true,
     },
 
@@ -127,9 +131,10 @@ userSchema.methods = {
 userSchema.statics = {
   roles,
 };
+userSchema.index({ email: 1, phoneNumber: 1 }, { unique: true });
 
-userSchema.plugin(mongooseKeywords, { paths: ["email", "name"] });
-
+userSchema.plugin(mongooseKeywords, { paths: ["email", "phoneNumber"] });
+userSchema.plugin(uniqueValidator);
 const model = mongoose.model("User", userSchema);
 
 export const schema = model.schema;
