@@ -13,6 +13,14 @@ export const notFound = (res) => (entity) => {
   return null;
 };
 
+export const notFoundInCollection = (res, errResponse) => (entity) => {
+  if (entity) {
+    return entity;
+  }
+  res.status(500).json(errResponse).end();
+  return null;
+};
+
 export const authorOrAdmin = (res, user, userField) => (entity) => {
   if (entity) {
     const isAdmin = user.role === "admin";
