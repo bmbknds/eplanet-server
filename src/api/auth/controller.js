@@ -8,6 +8,13 @@ export const login = ({ user }, res, next) => {
     .then(success(res, 201))
     .catch(next);
 };
+export const checkAuth = ({ user, headers }, res, next) => {
+  // console.log(headers);
+  success(
+    res,
+    200
+  )({ user, token: headers.authorization.replace("Bearer ", "") });
+};
 
 export const getMenu = ({ user, body }, res, next) => {
   const menu = body.language === "vi" ? menu_vn : menu_en;
@@ -15,8 +22,10 @@ export const getMenu = ({ user, body }, res, next) => {
     return success(res, 200)(menu.adminMenu);
   }
   if (user.role === "student") {
-    const menu = menu_en.studentMenu;
     return success(res, 200)(menu.studentMenu);
+  }
+  if (user.role === "teacher") {
+    return success(res, 200)(menu.teacherMenu);
   }
 
   return success(res, 200)([]);

@@ -19,13 +19,18 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
-    price: {
-      type: Number,
+    coursDetail: {
+      type: Object,
       required: true,
     },
+    // price: {
+    //   type: Number,
+    //   required: true,
+    // },
     startDate: {
       type: Date,
       default: new Date(),
+      required: true,
     },
 
     records: {

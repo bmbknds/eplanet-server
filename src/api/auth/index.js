@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, getMenu } from "./controller";
+import { login, getMenu, checkAuth } from "./controller";
 import { password, master } from "../../services/passport";
 import { token } from "../../services/passport";
 
@@ -30,5 +30,7 @@ router.post("/login", password(), login);
  * @apiError 401 Master access only or invalid credentials.
  */
 router.post("/getmenu", token({ required: true }), getMenu);
+
+router.get("/checkAuth", token({ required: true }), checkAuth);
 
 export default router;

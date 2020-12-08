@@ -19,6 +19,7 @@ const {
   teacherId,
   timeTable,
   coursId,
+  coursDetail,
   records,
   status,
   paid,
@@ -39,7 +40,15 @@ const {
  */
 router.post(
   "/",
-  // body({ studentId, teacherId, timeTable, coursId, records }),
+  body({
+    studentId,
+    teacherId,
+    timeTable,
+    coursId,
+    status,
+    // records,
+    paid,
+  }),
   create
 );
 

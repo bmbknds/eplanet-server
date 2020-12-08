@@ -45,7 +45,10 @@ const {
 router.get(
   "/list",
   query({
-    role,
+    role: {
+      type: String,
+      paths: ["role"],
+    },
     name: {
       type: RegExp,
 

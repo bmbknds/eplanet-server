@@ -6,6 +6,7 @@ import cours from "./cours";
 
 import fileUpload from "./file-upload";
 import order from './order'
+import record from './record'
 
 const router = new Router();
 
@@ -39,5 +40,6 @@ router.use("/cours", cours);
 
 router.use("/file-uploads", fileUpload);
 router.use('/orders', order)
+router.use('/records', record)
 
 export default router;

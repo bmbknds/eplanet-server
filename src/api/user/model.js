@@ -59,7 +59,7 @@ const userSchema = new Schema(
     },
     status: {
       type: String,
-      default: "Active",
+      default: "active",
     },
   },
   {

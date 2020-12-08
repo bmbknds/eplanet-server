@@ -1,4 +1,12 @@
-const teacherMenu = [];
+const teacherMenu = [
+  {
+    path: "/dashboard/overview",
+    name: "Dashboard",
+    icon: "fas fa-chalkboard",
+    exact: true,
+    routes: [],
+  },
+];
 const studentMenu = [
   {
     path: "/dashboard/class-info",

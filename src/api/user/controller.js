@@ -2,9 +2,11 @@ import { success, notFound } from "../../services/response/";
 import { User } from ".";
 import { sign } from "../../services/jwt";
 import { pickBy, identity } from "lodash";
-
+import { checkInUse } from "../../utils/index";
+import mongoose from "mongoose";
 export const index = ({ querymen: { query, select, cursor } }, res, next) => {
   // const { filter } = req.body;
+  query.status = "active";
   return User.find(query, select, cursor)
     .then((users) => users.map((user) => user.view()))
     .then(success(res))
@@ -101,9 +103,41 @@ export const updatePassword = (
     .then(success(res))
     .catch(next);
 
-export const destroy = ({ params }, res, next) =>
+export const destroy = async ({ params }, res, next) => {
   User.findById(params.id)
     .then(notFound(res))
-    .then((user) => (user ? user.remove() : null))
+    .then(async (user) => {
+      const isInUse = await checkInUse([
+        {
+          name: "Order",
+          fields: [
+            {
+              name: user.role === "teacher" ? "teacherId" : "studentId",
+              value: params.id,
+            },
+
+            {
+              name: "status",
+              value: "active",
+            },
+          ],
+        },
+      ]);
+      if (!isInUse) {
+        // return true;
+        user.status = "deleted";
+        return user.save();
+      } else {
+        res
+          .status(500)
+          .json({
+            code: 403,
+            message: "Delete failed. User is in active class!",
+          })
+          .end();
+        return null;
+      }
+    })
     .then(success(res, 204))
     .catch(next);
+};
