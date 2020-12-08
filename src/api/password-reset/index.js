@@ -20,7 +20,7 @@ const { email, password } = schema.tree;
  */
 router.post(
   "/",
-  master(),
+  // master(),
   body({ email, link: { type: String, required: true } }),
   create
 );
