@@ -134,6 +134,13 @@ const adminMenu = [
       //   },
     ],
   },
+  {
+    path: "/dashboard/system-config",
+    name: "System-config",
+    icon: "fas fa-cogs",
+    exact: true,
+    routes: [],
+  },
 ];
 
 export { teacherMenu, studentMenu, adminMenu };

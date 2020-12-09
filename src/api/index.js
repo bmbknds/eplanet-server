@@ -7,6 +7,7 @@ import cours from "./cours";
 import fileUpload from "./file-upload";
 import order from './order'
 import record from './record'
+import systemConfig from './system-config'
 
 const router = new Router();
 
@@ -41,5 +42,6 @@ router.use("/cours", cours);
 router.use("/file-uploads", fileUpload);
 router.use('/orders', order)
 router.use('/records', record)
+router.use('/system-configs', systemConfig)
 
 export default router;
