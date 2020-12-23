@@ -2,6 +2,7 @@ import { success, notFound } from "../../services/response/";
 import { User } from ".";
 import { sign } from "../../services/jwt";
 import { pickBy, identity } from "lodash";
+import lodash from "lodash";
 import { checkInUse } from "../../utils/index";
 import mongoose from "mongoose";
 export const index = ({ querymen: { query, select, cursor } }, res, next) => {
@@ -30,7 +31,7 @@ export const create = ({ bodymen: { body } }, res, next) =>
         .then(success(res, 201));
     })
     .catch((err) => {
-      console.log(err.errors);
+      // console.log(err.errors);
       /* istanbul ignore else */
       if (err.errors) {
         let message = "";
@@ -69,12 +70,40 @@ export const update = ({ bodymen: { body }, params, user }, res, next) =>
       }
       return result;
     })
-    .then((user) =>
-      user ? Object.assign(user, pickBy(body, identity)).save() : null
-    )
+    .then((user) => {
+      // console.log(1);
+      // console.log(
+      //   "1",
+      //   lodash.difference(
+      //     lodash.keys(user), // ["104", "102", "101"]
+      //     lodash.keys(pickBy(body, identity)) // ["104", "102"]
+      //   )
+      // );
+      return user ? Object.assign(user, pickBy(body, identity)).save() : null;
+    })
     .then((user) => (user ? user.view(true) : null))
     .then(success(res))
-    .catch(next);
+    .catch((err) => {
+      if (err.errors) {
+        let message = "";
+        Object.keys(err.errors).forEach((item) => {
+          if (item === "email") {
+            message = message + "Email already registered. \n ";
+          }
+          if (item === "phoneNumber") {
+            message = message + "Phone number already registered. \n ";
+          }
+        });
+
+        res.status(409).json({
+          valid: false,
+          param: "email",
+          message,
+        });
+      } else {
+        next(err);
+      }
+    });
 
 export const updatePassword = (
   { bodymen: { body }, params, user },
