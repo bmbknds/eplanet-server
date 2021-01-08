@@ -1,11 +1,8 @@
-const teacherMenu = [];
-const studentMenu = [];
-const adminMenu = [
-  {
-    path: "/cours",
-    name: "Cours",
-
-    children: [],
-  },
-];
-export { teacherMenu, studentMenu, adminMenu };
+const CLASS_STATUS = {
+  FINISH: 1,
+  VALID_BY_TEACHER: 2,
+  VALID_BY_STUDENT: 3,
+  INVALID_BY_TEACHER: 4,
+  INVALID_BY_STUDENT: 5,
+};
+export { CLASS_STATUS };

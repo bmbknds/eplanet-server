@@ -4,10 +4,10 @@ import mongoose, { Schema } from "mongoose";
 const recordSchema = new Schema(
   {
     status: {
-      type: String,
+      type: Number,
     },
     recordDate: {
-      type: Date,
+      type: Number,
       required: true,
     },
     timeTable: {
@@ -36,6 +36,9 @@ const recordSchema = new Schema(
       type: String,
       required: true,
     },
+    logs: {
+      type: Array,
+    },
   },
   {
     timestamps: true,
@@ -52,22 +55,32 @@ recordSchema.methods = {
   view(full) {
     const view = {
       // simple view
-      id: this.id,
+      _id: this.id,
       status: this.status,
       studentFeedback: this.studentFeedback,
       teacherFeedback: this.teacherFeedback,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      timeTable: this.timeTable,
+      recordDate: this.recordDate,
+      student: this.student,
     };
 
     return full
       ? {
           ...view,
+
           // add properties for a full view
         }
       : view;
   },
 };
+recordSchema.virtual("student", {
+  ref: "User",
+  localField: "studentId",
+  foreignField: "_id",
+  justOne: true,
+});
 recordSchema.index({ teacherId: 1, studentId: 1, coursId: 1, orderId: 1 });
 const model = mongoose.model("Record", recordSchema);
 

@@ -52,7 +52,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/cours/edit",
+        path: "/dashboard/cours/edit/:id",
         name: "Cours detail",
         icon: "fab fa-leanpub",
         exact: true,
@@ -76,7 +76,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/teacher/edit",
+        path: "/dashboard/teacher/edit/:id",
         name: "Teacher detail",
         icon: "fas fa-chalkboard-teacher",
         exact: true,
@@ -100,7 +100,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/student/edit",
+        path: "/dashboard/student/edit/:id",
         name: "Student detail",
         icon: "fas fa-user-graduate",
         exact: true,

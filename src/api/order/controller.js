@@ -80,15 +80,16 @@ export const getBookedSlot = ({ body }, res, next) => {
   return Order.find(body)
     .populate({ path: "student", select: "name" })
     .then((orders) => {
-      console.log(orders);
       let bookedSlot = [];
       orders.forEach((element) => {
-        const timeTable = element.timeTable.map((item) => ({
-          ...item,
-          status: element.status,
-          student: element.student,
-        }));
-        bookedSlot = [...bookedSlot, ...timeTable];
+        if (element.status === "active") {
+          const timeTable = element.timeTable.map((item) => ({
+            ...item,
+            status: element.status,
+            student: element.student,
+          }));
+          bookedSlot = [...bookedSlot, ...timeTable];
+        }
       });
       return bookedSlot;
     })

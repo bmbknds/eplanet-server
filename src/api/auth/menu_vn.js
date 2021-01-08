@@ -52,7 +52,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/cours/edit",
+        path: "/dashboard/cours/edit/:id",
         name: "Chi tiết khoá học",
         icon: "fab fa-leanpub",
         exact: true,
@@ -76,7 +76,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/teacher/edit",
+        path: "/dashboard/teacher/edit/:id",
         name: "Chi tiết giáo viên",
         icon: "fas fa-chalkboard-teacher",
         exact: true,
@@ -100,7 +100,7 @@ const adminMenu = [
     exact: true,
     routes: [
       {
-        path: "/dashboard/student/edit",
+        path: "/dashboard/student/edit/:id",
         name: "Chi tiết học sinh",
         icon: "fas fa-user-graduate",
         exact: true,
@@ -124,7 +124,7 @@ const adminMenu = [
     exact: true,
     routes: [
       //   {
-      //     path: '/dashboard/cours/edit',
+      //     path: '/dashboard/cours/edit/:id',
       //     name: 'Cours detail',
       //     icon: <ReadOutlined />,
       //     exact: true,

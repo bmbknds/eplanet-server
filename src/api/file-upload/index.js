@@ -21,7 +21,7 @@ var fileStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(
       null,
-      path.join(__dirname, `assets/images`).replace("src/api/file-upload", "")
+      path.join(__dirname, `assets/files`).replace("src/api/file-upload", "")
     );
   },
   filename: function (req, file, cb) {
