@@ -2,7 +2,7 @@ import { success, notFound } from "../../services/response/";
 import { User } from ".";
 import { sign } from "../../services/jwt";
 import { pickBy, identity } from "lodash";
-import lodash from "lodash";
+
 import { checkInUse } from "../../utils/index";
 import mongoose from "mongoose";
 export const index = ({ querymen: { query, select, cursor } }, res, next) => {

@@ -10,6 +10,7 @@ import {
   report,
   takeLeave,
   submitReport,
+  getTakeLeaveRecords,
 } from "./controller";
 import { schema } from "./model";
 import {
@@ -17,6 +18,7 @@ import {
   master,
   token,
 } from "../../services/passport";
+
 export Record, { schema } from "./model";
 
 const router = new Router();
@@ -143,8 +145,26 @@ router.get(
   }),
   takeLeave
 );
+router.get(
+  "/take-leave-records",
+  token({ required: true }),
+  query({
+    from: {
+      type: Number,
+      paths: ["recordDate"],
+      operator: "$gte",
+    },
+    to: {
+      type: Number,
+      paths: ["recordDate"],
+      operator: "$lte",
+    },
+  }),
+  getTakeLeaveRecords
+);
 router.put(
   "/report/:id",
+  token({ required: true }),
   body({ status, studentFeedback, teacherFeedback }),
   submitReport
 );

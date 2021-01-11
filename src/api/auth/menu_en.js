@@ -13,6 +13,13 @@ const teacherMenu = [
     exact: true,
     routes: [],
   },
+  {
+    path: "/dashboard/students",
+    name: "Students",
+    icon: "fas fa-user-graduate",
+    exact: true,
+    routes: [],
+  },
 ];
 const studentMenu = [
   {

@@ -47,6 +47,7 @@ export const token = ({ required, roles = User.roles } = {}) => (
       }
       req.logIn(user, { session: false }, (err) => {
         if (err) return res.status(401).end();
+        // console.log(user);
         next();
       });
     }
