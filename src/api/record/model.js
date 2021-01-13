@@ -14,6 +14,11 @@ const recordSchema = new Schema(
       type: Object,
       require: true,
     },
+    type: {
+      type: String,
+      enum: ["Normal", "Bonus"],
+      default: "Normal",
+    },
     studentFeedback: {
       type: Object,
     },

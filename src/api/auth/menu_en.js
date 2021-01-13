@@ -18,7 +18,16 @@ const teacherMenu = [
     name: "Students",
     icon: "fas fa-user-graduate",
     exact: true,
-    routes: [],
+    routes: [
+      {
+        path: "/dashboard/students/detail/:id",
+        name: "Student detail",
+        icon: "fab fa-leanpub",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+    ],
   },
 ];
 const studentMenu = [

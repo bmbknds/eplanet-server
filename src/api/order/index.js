@@ -9,9 +9,15 @@ import {
   destroy,
   getBookedSlot,
   getPendingForAdmin,
+  getListStudent,
 } from "./controller";
 import { schema } from "./model";
 export Order, { schema } from "./model";
+import {
+  password as passwordAuth,
+  master,
+  token,
+} from "../../services/passport";
 
 const router = new Router();
 const {
@@ -61,6 +67,34 @@ router.post(
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
 router.post("/list", index);
+/**
+ * @api {get} /orders/:id Retrieve order
+ * @apiName RetrieveOrder
+ * @apiGroup Order
+ * @apiSuccess {Object} order Order's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 Order not found.
+ */
+router.get(
+  "/get-list-student",
+  token({ required: true, roles: ["teacher"] }),
+  query({
+    from: {
+      type: Date,
+      paths: ["startDate"],
+      operator: "$gte",
+    },
+    to: {
+      type: Date,
+      paths: ["startDate"],
+      operator: "$lte",
+    },
+    studentName: {
+      type: String,
+    },
+  }),
+  getListStudent
+);
 
 /**
  * @api {get} /orders/:id Retrieve order

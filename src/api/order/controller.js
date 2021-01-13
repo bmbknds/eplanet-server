@@ -36,6 +36,84 @@ export const index = (req, res, next) => {
     .then(success(res))
     .catch(next);
 };
+export const getListStudent = (
+  { querymen: { query, select, cursor }, user },
+  res,
+  next
+) => {
+  console.log(user);
+  const matchQuery = {
+    teacherId: user._id.toString(),
+  };
+  if (query.startDate) {
+    // console.log("date", moment.isDate(query.startDate["$gte"]));
+    matchQuery.startDate = query.startDate;
+  }
+  const aggregateQuery = [
+    {
+      $match: matchQuery,
+    },
+    {
+      $addFields: {
+        objectIdStudent: { $toObjectId: "$studentId" },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "objectIdStudent",
+        foreignField: "_id",
+        as: "studentDetail",
+      },
+    },
+
+    {
+      $unwind: "$studentDetail",
+    },
+    {
+      $addFields: {
+        studentName: "$studentDetail.name",
+      },
+    },
+    {
+      $project: {
+        studentDetail: 0,
+        objectIdStudent: 0,
+      },
+    },
+  ];
+
+  if (query.studentName) {
+    aggregateQuery.push({
+      $match: {
+        studentName: {
+          $regex: query.studentName,
+          $options: "i",
+        },
+      },
+    });
+  }
+  aggregateQuery.push({
+    $addFields: {
+      stringIdOrder: { $toString: "$_id" },
+    },
+  });
+  aggregateQuery.push({
+    $lookup: {
+      from: "records",
+      localField: "stringIdOrder",
+      foreignField: "orderId",
+      as: "records",
+    },
+  });
+  Order.aggregate(aggregateQuery)
+    .then((orders) => res.status(200).json(orders).send())
+    .catch((err) => {
+      console.log(err);
+    });
+
+  console.log(query);
+};
 
 export const show = ({ params }, res, next) =>
   Order.findById(params.id)
