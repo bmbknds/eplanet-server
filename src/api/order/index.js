@@ -92,6 +92,9 @@ router.get(
     studentName: {
       type: String,
     },
+    _id: {
+      type: String,
+    },
   }),
   getListStudent
 );

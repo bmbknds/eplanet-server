@@ -45,6 +45,9 @@ export const getListStudent = (
   const matchQuery = {
     teacherId: user._id.toString(),
   };
+  if (query._id) {
+    matchQuery._id = mongoose.Types.ObjectId(query._id);
+  }
   if (query.startDate) {
     // console.log("date", moment.isDate(query.startDate["$gte"]));
     matchQuery.startDate = query.startDate;
