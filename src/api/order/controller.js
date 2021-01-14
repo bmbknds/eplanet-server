@@ -41,10 +41,13 @@ export const getListStudent = (
   res,
   next
 ) => {
-  console.log(user);
-  const matchQuery = {
-    teacherId: user._id.toString(),
-  };
+  const matchQuery = {};
+  if (user.role === "teacher") {
+    matchQuery.teacherId = user._id.toString();
+  }
+  if (user.role === "student") {
+    matchQuery.studentId = user._id.toString();
+  }
   if (query._id) {
     matchQuery._id = mongoose.Types.ObjectId(query._id);
   }

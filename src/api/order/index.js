@@ -77,7 +77,7 @@ router.post("/list", index);
  */
 router.get(
   "/get-list-student",
-  token({ required: true, roles: ["teacher"] }),
+  token({ required: true, roles: ["teacher", "student"] }),
   query({
     from: {
       type: Date,
