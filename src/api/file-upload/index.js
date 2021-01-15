@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { token } from "../../services/passport";
-import { create, show } from "./controller";
+import { create, show, uploadFinalReport } from "./controller";
 const multer = require("multer");
 const fs = require("fs");
 var path = require("path");
@@ -21,12 +21,14 @@ var fileStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(
       null,
-      path.join(__dirname, `assets/files`).replace("src/api/file-upload", "")
+      path.join(__dirname, `assets/files`).replace("/src/api/file-upload", "")
     );
   },
-  filename: function (req, file, cb) {
-    console.log(file);
-    cb(null, req.params.id + "-" + Date.now() + file.originalname);
+  filename: function ({ params }, file, cb) {
+    cb(
+      null,
+      params.id || params.orderId + "-" + Date.now() + file.originalname
+    );
   },
 });
 var upload = multer({ storage: storage });
@@ -82,6 +84,15 @@ router.post(
   }),
   multer({ storage: fileStorage }).single("file"),
   create
+);
+router.post(
+  "/final-report/:orderId",
+  token({
+    required: true,
+    roles: ["admin", "teacher", "super-admin", "student"],
+  }),
+  multer({ storage: fileStorage }).single("file"),
+  uploadFinalReport
 );
 
 export default router;

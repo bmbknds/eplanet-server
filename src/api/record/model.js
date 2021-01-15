@@ -19,10 +19,10 @@ const recordSchema = new Schema(
       enum: ["Normal", "Bonus"],
       default: "Normal",
     },
-    studentFeedback: {
+    studentComment: {
       type: Object,
     },
-    teacherFeedback: {
+    teacherComment: {
       type: Object,
     },
     teacherId: {
@@ -62,8 +62,8 @@ recordSchema.methods = {
       // simple view
       _id: this.id,
       status: this.status,
-      studentFeedback: this.studentFeedback,
-      teacherFeedback: this.teacherFeedback,
+      studentComment: this.studentComment,
+      teacherComment: this.teacherComment,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       timeTable: this.timeTable,

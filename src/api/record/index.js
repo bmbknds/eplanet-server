@@ -24,8 +24,8 @@ export Record, { schema } from "./model";
 const router = new Router();
 const {
   status,
-  studentFeedback,
-  teacherFeedback,
+  studentComment,
+  teacherComment,
   teacherId,
   studentId,
 } = schema.tree;
@@ -35,13 +35,13 @@ const {
  * @apiName CreateRecord
  * @apiGroup Record
  * @apiParam status Record's status.
- * @apiParam studentFeedback Record's studentFeedback.
- * @apiParam teacherFeedback Record's teacherFeedback.
+ * @apiParam studentComment Record's studentComment.
+ * @apiParam teacherComment Record's teacherComment.
  * @apiSuccess {Object} record Record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Record not found.
  */
-router.post("/", body({ status, studentFeedback, teacherFeedback }), create);
+router.post("/", body({ status, studentComment, teacherComment }), create);
 
 /**
  * @api {get} /records Retrieve records
@@ -112,8 +112,8 @@ router.get(
  * @apiName UpdateRecord
  * @apiGroup Record
  * @apiParam status Record's status.
- * @apiParam studentFeedback Record's studentFeedback.
- * @apiParam teacherFeedback Record's teacherFeedback.
+ * @apiParam studentComment Record's studentComment.
+ * @apiParam teacherComment Record's teacherComment.
  * @apiSuccess {Object} record Record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Record not found.
@@ -165,7 +165,7 @@ router.get(
 router.put(
   "/report/:id",
   token({ required: true }),
-  body({ status, studentFeedback, teacherFeedback }),
+  body({ status, studentComment, teacherComment }),
   submitReport
 );
 /**
@@ -183,13 +183,13 @@ router.get("/:id", show);
  * @apiName UpdateRecord
  * @apiGroup Record
  * @apiParam status Record's status.
- * @apiParam studentFeedback Record's studentFeedback.
- * @apiParam teacherFeedback Record's teacherFeedback.
+ * @apiParam studentComment Record's studentComment.
+ * @apiParam teacherComment Record's teacherComment.
  * @apiSuccess {Object} record Record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Record not found.
  */
-router.put("/:id", body({ status, studentFeedback, teacherFeedback }), update);
+router.put("/:id", body({ status, studentComment, teacherComment }), update);
 
 /**
  * @api {delete} /records/:id Delete record

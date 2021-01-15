@@ -112,13 +112,12 @@ export const getListStudent = (
       as: "records",
     },
   });
-  Order.aggregate(aggregateQuery)
-    .then((orders) => res.status(200).json(orders).send())
+  return Order.aggregate(aggregateQuery)
+    .then((orders) => res.status(200).json(orders))
     .catch((err) => {
       console.log(err);
+      return next();
     });
-
-  console.log(query);
 };
 
 export const show = ({ params }, res, next) =>

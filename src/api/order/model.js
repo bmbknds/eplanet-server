@@ -49,6 +49,9 @@ const orderSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    finalReport: {
+      type: Array,
+    },
   },
   {
     timestamps: true,
@@ -73,6 +76,7 @@ orderSchema.methods = {
       records: this.records,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      finalReport: this.finalReport,
     };
 
     return full
