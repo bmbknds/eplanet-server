@@ -51,6 +51,9 @@ export const getListStudent = (
   if (query._id) {
     matchQuery._id = mongoose.Types.ObjectId(query._id);
   }
+  if (query.status) {
+    matchQuery.status = query.status;
+  }
   if (query.startDate) {
     // console.log("date", moment.isDate(query.startDate["$gte"]));
     matchQuery.startDate = query.startDate;
@@ -62,6 +65,7 @@ export const getListStudent = (
     {
       $addFields: {
         objectIdStudent: { $toObjectId: "$studentId" },
+        objectIdTeacher: { $toObjectId: "$teacherId" },
       },
     },
     {
@@ -82,8 +86,16 @@ export const getListStudent = (
       },
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "objectIdTeacher",
+        foreignField: "_id",
+        as: "teacherDetail",
+      },
+    },
+
+    {
       $project: {
-        studentDetail: 0,
         objectIdStudent: 0,
       },
     },

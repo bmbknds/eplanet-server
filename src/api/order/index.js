@@ -77,7 +77,10 @@ router.post("/list", index);
  */
 router.get(
   "/get-list-student",
-  token({ required: true, roles: ["teacher", "student"] }),
+  token({
+    required: true,
+    roles: ["teacher", "student", "admin", "super-admin"],
+  }),
   query({
     from: {
       type: Date,
@@ -93,6 +96,9 @@ router.get(
       type: String,
     },
     _id: {
+      type: String,
+    },
+    status: {
       type: String,
     },
   }),
