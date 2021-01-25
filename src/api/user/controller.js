@@ -24,8 +24,8 @@ export const show = ({ params }, res, next) =>
 
 export const showMe = ({ user }, res) => res.json(user.view(true));
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  User.create(body)
+export const create = ({ bodymen: { body } }, res, next) => {
+  return User.create(body)
     .then((user) => {
       sign(user.id)
         .then((token) => ({ token, user: user.view(true) }))
@@ -54,7 +54,7 @@ export const create = ({ bodymen: { body } }, res, next) =>
         next(err);
       }
     });
-
+};
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === "me" ? user.id : params.id)
     .then(notFound(res))

@@ -10,6 +10,7 @@ import {
   getBookedSlot,
   getPendingForAdmin,
   getListStudent,
+  getTeachersAndSlot,
 } from "./controller";
 import { schema } from "./model";
 export Order, { schema } from "./model";
@@ -104,7 +105,11 @@ router.get(
   }),
   getListStudent
 );
-
+router.get(
+  "/getTeachersAndSlots",
+  // body({ studentId, teacherId, timeTable, coursId, records }),
+  getTeachersAndSlot
+);
 /**
  * @api {get} /orders/:id Retrieve order
  * @apiName RetrieveOrder

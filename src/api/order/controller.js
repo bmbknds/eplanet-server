@@ -1,8 +1,10 @@
 import { success, notFound } from "../../services/response/";
 import { Order } from ".";
 import Cours from "../cours/model";
+import Users from "../user/model";
 import Record from "../record/model";
 import { generateRecord } from "../../utils/index";
+import lodash from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
 const objectId = mongoose.Types.ObjectId;
@@ -144,16 +146,16 @@ export const update = ({ body, params }, res, next) => {
     .populate({ path: "cours" })
     .then(notFound(res))
     .then(async (order) => {
-      if (order) {
-        if (body.status === "active") {
-          body.status = "pending";
-
-          body.records = await generateRecord(order);
-          return null;
-          // return Object.assign(order, body).save();
-        }
+      if (body.status === "active") {
+        const records = await generateRecord(order);
+        return Record.insertMany(records).then(() => {
+          order.status = body.status;
+          order.paid = body.paid;
+          return order.save();
+        });
       } else {
-        return null;
+        order.status = "cancel";
+        return order.save();
       }
     })
     .then((order) => (order ? order.view(true) : null))
@@ -172,12 +174,12 @@ export const destroy = ({ params }, res, next) =>
 export const getBookedSlot = ({ body }, res, next) => {
   // const { teacherId } = body;
   console.log(body);
-  return Order.find(body)
+  return Order.find({ ...body })
     .populate({ path: "student", select: "name" })
     .then((orders) => {
       let bookedSlot = [];
       orders.forEach((element) => {
-        if (element.status === "active") {
+        if (element.status === "active" || element.status === "pending") {
           const timeTable = element.timeTable.map((item) => ({
             ...item,
             status: element.status,
@@ -188,6 +190,42 @@ export const getBookedSlot = ({ body }, res, next) => {
       });
       return bookedSlot;
     })
+    .then(success(res, 200))
+    .catch(next);
+};
+export const getTeachersAndSlot = ({ query }, res, next) => {
+  return Users.aggregate([
+    {
+      $match: {
+        role: "teacher",
+        teacherInfor: { $ne: null },
+        status: "active",
+      },
+    },
+    {
+      $addFields: {
+        stringIdTeacher: { $toString: "$_id" },
+      },
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "stringIdTeacher",
+        foreignField: "teacherId",
+        as: "orders",
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        picture: 1,
+        teacherInfor: 1,
+        "orders.timeTable": 1,
+        "orders.status": 1,
+      },
+    },
+  ])
     .then(success(res, 200))
     .catch(next);
 };

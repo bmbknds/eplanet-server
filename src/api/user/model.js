@@ -61,6 +61,10 @@ const userSchema = new Schema(
       type: String,
       default: "active",
     },
+    trialLessons: {
+      type: Number,
+      default: 1,
+    },
   },
   {
     timestamps: true,
