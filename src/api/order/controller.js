@@ -1,8 +1,10 @@
 import { success, notFound } from "../../services/response/";
 import { Order } from ".";
 import Cours from "../cours/model";
+import Users from "../user/model";
 import Record from "../record/model";
 import { generateRecord } from "../../utils/index";
+import lodash from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
 const objectId = mongoose.Types.ObjectId;
@@ -36,6 +38,101 @@ export const index = (req, res, next) => {
     .then(success(res))
     .catch(next);
 };
+export const getListStudent = (
+  { querymen: { query, select, cursor }, user },
+  res,
+  next
+) => {
+  const matchQuery = {};
+  if (user.role === "teacher") {
+    matchQuery.teacherId = user._id.toString();
+  }
+  if (user.role === "student") {
+    matchQuery.studentId = user._id.toString();
+  }
+  if (query._id) {
+    matchQuery._id = mongoose.Types.ObjectId(query._id);
+  }
+  if (query.status) {
+    matchQuery.status = query.status;
+  }
+  if (query.startDate) {
+    // console.log("date", moment.isDate(query.startDate["$gte"]));
+    matchQuery.startDate = query.startDate;
+  }
+  const aggregateQuery = [
+    {
+      $match: matchQuery,
+    },
+    {
+      $addFields: {
+        objectIdStudent: { $toObjectId: "$studentId" },
+        objectIdTeacher: { $toObjectId: "$teacherId" },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "objectIdStudent",
+        foreignField: "_id",
+        as: "studentDetail",
+      },
+    },
+
+    {
+      $unwind: "$studentDetail",
+    },
+    {
+      $addFields: {
+        studentName: "$studentDetail.name",
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "objectIdTeacher",
+        foreignField: "_id",
+        as: "teacherDetail",
+      },
+    },
+
+    {
+      $project: {
+        objectIdStudent: 0,
+      },
+    },
+  ];
+
+  if (query.studentName) {
+    aggregateQuery.push({
+      $match: {
+        studentName: {
+          $regex: query.studentName,
+          $options: "i",
+        },
+      },
+    });
+  }
+  aggregateQuery.push({
+    $addFields: {
+      stringIdOrder: { $toString: "$_id" },
+    },
+  });
+  aggregateQuery.push({
+    $lookup: {
+      from: "records",
+      localField: "stringIdOrder",
+      foreignField: "orderId",
+      as: "records",
+    },
+  });
+  return Order.aggregate(aggregateQuery)
+    .then((orders) => res.status(200).json(orders))
+    .catch((err) => {
+      console.log(err);
+      return next();
+    });
+};
 
 export const show = ({ params }, res, next) =>
   Order.findById(params.id)
@@ -49,16 +146,16 @@ export const update = ({ body, params }, res, next) => {
     .populate({ path: "cours" })
     .then(notFound(res))
     .then(async (order) => {
-      if (order) {
-        if (body.status === "active") {
-          body.status = "pending";
-
-          body.records = await generateRecord(order);
-          return null;
-          // return Object.assign(order, body).save();
-        }
+      if (body.status === "active") {
+        const records = await generateRecord(order);
+        return Record.insertMany(records).then(() => {
+          order.status = body.status;
+          order.paid = body.paid;
+          return order.save();
+        });
       } else {
-        return null;
+        order.status = "cancel";
+        return order.save();
       }
     })
     .then((order) => (order ? order.view(true) : null))
@@ -77,21 +174,58 @@ export const destroy = ({ params }, res, next) =>
 export const getBookedSlot = ({ body }, res, next) => {
   // const { teacherId } = body;
   console.log(body);
-  return Order.find(body)
+  return Order.find({ ...body })
     .populate({ path: "student", select: "name" })
     .then((orders) => {
-      console.log(orders);
       let bookedSlot = [];
       orders.forEach((element) => {
-        const timeTable = element.timeTable.map((item) => ({
-          ...item,
-          status: element.status,
-          student: element.student,
-        }));
-        bookedSlot = [...bookedSlot, ...timeTable];
+        if (element.status === "active" || element.status === "pending") {
+          const timeTable = element.timeTable.map((item) => ({
+            ...item,
+            status: element.status,
+            student: element.student,
+          }));
+          bookedSlot = [...bookedSlot, ...timeTable];
+        }
       });
       return bookedSlot;
     })
+    .then(success(res, 200))
+    .catch(next);
+};
+export const getTeachersAndSlot = ({ query }, res, next) => {
+  return Users.aggregate([
+    {
+      $match: {
+        role: "teacher",
+        teacherInfor: { $ne: null },
+        status: "active",
+      },
+    },
+    {
+      $addFields: {
+        stringIdTeacher: { $toString: "$_id" },
+      },
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "stringIdTeacher",
+        foreignField: "teacherId",
+        as: "orders",
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        picture: 1,
+        teacherInfor: 1,
+        "orders.timeTable": 1,
+        "orders.status": 1,
+      },
+    },
+  ])
     .then(success(res, 200))
     .catch(next);
 };

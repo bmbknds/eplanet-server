@@ -38,7 +38,7 @@ const orderSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["deleted", "pending", "active", "cancel"],
+      enum: ["deleted", "pending", "active", "cancel", "done"],
       default: "pending",
     },
     hasTrial: {
@@ -48,6 +48,9 @@ const orderSchema = new Schema(
     paid: {
       type: Boolean,
       default: false,
+    },
+    finalReport: {
+      type: Array,
     },
   },
   {
@@ -73,6 +76,7 @@ orderSchema.methods = {
       records: this.records,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      finalReport: this.finalReport,
     };
 
     return full
