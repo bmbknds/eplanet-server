@@ -12,6 +12,7 @@ if (mongo.uri) {
     autoIndex: false,
     user: mongo.user,
     pass: mongo.password,
+    authSource: "e-planet-dev",
   });
 }
 mongoose.Promise = Promise;
