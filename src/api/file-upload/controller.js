@@ -1,6 +1,6 @@
-var path = require("path");
 import { success, notFound } from "../../services/response/";
 import { Order } from "../order";
+var path = require("path");
 export const create = ({ body, file }, res, next) => {
   console.log(file);
   console.log(path.join(__dirname, "/assets"));
@@ -11,6 +11,7 @@ export const create = ({ body, file }, res, next) => {
     ),
   });
 };
+
 export const uploadFinalReport = ({ body, file, params }, res, next) => {
   const finalReport = Object.assign({}, file);
   console.log("file", file);
@@ -19,7 +20,7 @@ export const uploadFinalReport = ({ body, file, params }, res, next) => {
     path.join(__dirname.replace("/src/api/file-upload", ""), "/assets"),
     ""
   );
-  console.log(finalReport);
+
   Order.findById(params.orderId)
     .then((order) => {
       order.finalReport = [...order.finalReport, ...[finalReport]];
