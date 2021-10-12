@@ -29,9 +29,31 @@
 	- [Submit password](#submit-password)
 	- [Verify token](#verify-token)
 	
+- [Record](#record)
+	- [Create record](#create-record)
+	- [Delete record](#delete-record)
+	- [Retrieve record](#retrieve-record)
+	- [Retrieve records](#retrieve-records)
+	- [Update record](#update-record)
+	
+- [Student](#student)
+	- [Create student](#create-student)
+	- [Delete student](#delete-student)
+	- [Retrieve student](#retrieve-student)
+	- [Retrieve students](#retrieve-students)
+	- [Update student](#update-student)
+	
+- [SystemConfig](#systemconfig)
+	- [Create system config](#create-system-config)
+	- [Delete system config](#delete-system-config)
+	- [Retrieve system config](#retrieve-system-config)
+	- [Retrieve system configs](#retrieve-system-configs)
+	- [Update system config](#update-system-config)
+	
 - [User](#user)
 	- [Create user](#create-user)
 	- [Delete user](#delete-user)
+	- [Register parent](#register-parent)
 	- [Retrieve current user](#retrieve-current-user)
 	- [Retrieve user](#retrieve-user)
 	- [Retrieve users](#retrieve-users)
@@ -300,6 +322,208 @@
 	GET /password-resets/:token
 
 
+# Record
+
+## Create record
+
+
+
+	POST /records
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| status			| 			|  <p>Record's status.</p>							|
+| studentComment			| 			|  <p>Record's studentComment.</p>							|
+| teacherComment			| 			|  <p>Record's teacherComment.</p>							|
+
+## Delete record
+
+
+
+	DELETE /records/:id
+
+
+## Retrieve record
+
+
+
+	GET /records/:id
+
+
+## Retrieve records
+
+
+
+	GET /records
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+## Update record
+
+
+
+	PUT /records/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| status			| 			|  <p>Record's status.</p>							|
+| studentComment			| 			|  <p>Record's studentComment.</p>							|
+| teacherComment			| 			|  <p>Record's teacherComment.</p>							|
+
+# Student
+
+## Create student
+
+
+
+	POST /student
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| studentName			| 			|  <p>Student's studentName.</p>							|
+| age			| 			|  <p>Student's age.</p>							|
+
+## Delete student
+
+
+
+	DELETE /student/:id
+
+
+## Retrieve student
+
+
+
+	GET /student/:id
+
+
+## Retrieve students
+
+
+
+	GET /student
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+## Update student
+
+
+
+	PUT /student/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| studentName			| 			|  <p>Student's studentName.</p>							|
+| age			| 			|  <p>Student's age.</p>							|
+
+# SystemConfig
+
+## Create system config
+
+
+
+	POST /system-configs
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+| key			| 			|  <p>System config's key.</p>							|
+| description			| 			|  <p>System config's description.</p>							|
+| value			| 			|  <p>System config's value.</p>							|
+
+## Delete system config
+
+
+
+	DELETE /system-configs/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+
+## Retrieve system config
+
+
+
+	GET /system-configs/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+
+## Retrieve system configs
+
+
+
+	GET /system-configs
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+## Update system config
+
+
+
+	PUT /system-configs/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| access_token			| String			|  <p>admin access token.</p>							|
+| key			| 			|  <p>System config's key.</p>							|
+| description			| 			|  <p>System config's description.</p>							|
+| value			| 			|  <p>System config's value.</p>							|
+
 # User
 
 ## Create user
@@ -332,6 +556,13 @@
 | Name    | Type      | Description                          |
 |---------|-----------|--------------------------------------|
 | access_token			| String			|  <p>User access_token.</p>							|
+
+## Register parent
+
+
+
+	REGISTER /users/register
+
 
 ## Retrieve current user
 

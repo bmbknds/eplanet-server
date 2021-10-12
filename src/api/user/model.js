@@ -65,6 +65,12 @@ const userSchema = new Schema(
       type: Number,
       default: 1,
     },
+    students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "student",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -107,7 +113,7 @@ userSchema.methods = {
       "name",
       "picture",
       "role",
-      "studentInfor",
+      "students",
       "teacherInfor",
       "skype",
       "phoneNumber",
