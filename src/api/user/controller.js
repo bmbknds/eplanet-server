@@ -1,5 +1,7 @@
+import passport from "passport";
 import { success, notFound } from "../../services/response/";
 import { User } from ".";
+import { Student } from "../student";
 import { sign } from "../../services/jwt";
 import { pickBy, identity } from "lodash";
 
@@ -24,9 +26,28 @@ export const show = ({ params }, res, next) =>
 
 export const showMe = ({ user }, res) => res.json(user.view(true));
 
+const createChild = function (parentId, child) {
+  return Student.create(child).then((childData) => {
+    console.log("\n>> Created Child:\n", childData);
+
+    return User.findByIdAndUpdate(
+      parentId,
+      { $push: { students: childData._id } },
+      { new: true, useFindAndModify: false }
+    );
+  });
+};
+
 export const create = ({ bodymen: { body } }, res, next) => {
   return User.create(body)
-    .then((user) => {
+    .then(async (user) => {
+      console.log("\n>> Created Child:\n", body);
+      //tạo con
+      await createChild(user._id, {
+        studentName: body.name,
+        age: body.studentInfor.age,
+      });
+
       sign(user.id)
         .then((token) => ({ token, user: user.view(true) }))
         .then(success(res, 201));
@@ -169,5 +190,82 @@ export const destroy = async ({ params }, res, next) => {
       }
     })
     .then(success(res, 204))
+    .catch(next);
+};
+
+const checkParentAccountExist = (email) => {
+  if (email === null) {
+    return true;
+  }
+  return User.findOne({ email });
+};
+
+export const register = async ({ body }, res, next) => {
+  console.log("\n>> Params:\n", body);
+  const checkEmail = await checkParentAccountExist(body.email);
+  if (checkEmail) {
+    console.log("aa", checkEmail);
+    res.status(409).json({
+      valid: false,
+      param: "email",
+      message: "existed",
+    });
+    return;
+  }
+  return User.create({
+    email: body.email,
+    password: body.password,
+    name: body.name,
+    phoneNumber: body.phoneNumber,
+    role: "student",
+  })
+    .then(async (user) => {
+      console.log("\n>> Created Child:\n", body);
+      //tạo con
+      await createChild(user._id, {
+        studentName: body.studentName,
+        age: body.studentAge,
+      });
+
+      sign(user.id)
+        .then((token) => ({ token, user: user.view(true) }))
+        .then(success(res, 201));
+    })
+    .catch((err) => {
+      // console.log(err.errors);
+      /* istanbul ignore else */
+      if (err.errors) {
+        let message = "";
+        Object.keys(err.errors).forEach((item) => {
+          if (item === "email") {
+            message = message + "Email already registered. \n ";
+          }
+          if (item === "phoneNumber") {
+            message = message + "Phone number already registered. \n ";
+          }
+        });
+
+        res.status(409).json({
+          valid: false,
+          param: "email",
+          message,
+        });
+      } else {
+        next(err);
+      }
+    });
+};
+
+export const registerAddChild = async ({ body }, res, next) => {
+  const user = await checkParentAccountExist(body.email);
+  //tạo con
+  var userNew = await createChild(user._id, {
+    studentName: body.studentName,
+    age: body.studentAge,
+  });
+
+  return sign(userNew)
+    .then((token) => ({ token, user: userNew.view(true) }))
+    .then(success(res, 201))
     .catch(next);
 };

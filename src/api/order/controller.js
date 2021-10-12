@@ -172,8 +172,6 @@ export const destroy = ({ params }, res, next) =>
     .catch(next);
 
 export const getBookedSlot = ({ body }, res, next) => {
-  // const { teacherId } = body;
-  console.log(body);
   return Order.find({ ...body })
     .populate({ path: "student", select: "name" })
     .then((orders) => {
@@ -193,6 +191,28 @@ export const getBookedSlot = ({ body }, res, next) => {
     .then(success(res, 200))
     .catch(next);
 };
+
+export const getAvailableSlots = ({ body }, res, next) => {
+  return Order.find({ ...body })
+    .populate({ path: "student", select: "name" })
+    .then((orders) => {
+      let bookedSlot = [];
+      orders.forEach((element) => {
+        if (element.status === "active" || element.status === "pending") {
+          const timeTable = element.timeTable.map((item) => ({
+            ...item,
+            status: element.status,
+            student: element.student,
+          }));
+          bookedSlot = [...bookedSlot, ...timeTable];
+        }
+      });
+      return bookedSlot;
+    })
+    .then(success(res, 200))
+    .catch(next);
+};
+
 export const getTeachersAndSlot = ({ query }, res, next) => {
   return Users.aggregate([
     {
