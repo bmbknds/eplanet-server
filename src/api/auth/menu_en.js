@@ -110,6 +110,30 @@ const adminMenu = [
     ],
   },
   {
+    path: "/dashboard/account",
+    name: "Account",
+    icon: "fas fa-user-graduate",
+    exact: true,
+    routes: [
+      {
+        path: "/dashboard/account/edit/:id",
+        name: "Account detail",
+        icon: "fas fa-user-graduate",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+      {
+        path: "/dashboard/account/add",
+        name: "Add account",
+        icon: "fas fa-user-graduate",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
     path: "/dashboard/student",
     name: "Student",
     icon: "fas fa-user-graduate",
@@ -118,14 +142,6 @@ const adminMenu = [
       {
         path: "/dashboard/student/edit/:id",
         name: "Student detail",
-        icon: "fas fa-user-graduate",
-        exact: true,
-        routes: [],
-        hideInMenu: true,
-      },
-      {
-        path: "/dashboard/student/add",
-        name: "Add student",
         icon: "fas fa-user-graduate",
         exact: true,
         routes: [],
