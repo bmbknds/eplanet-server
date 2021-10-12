@@ -205,10 +205,11 @@ export const register = async ({ body }, res, next) => {
   const checkEmail = await checkParentAccountExist(body.email);
   if (checkEmail) {
     console.log("aa", checkEmail);
-    res.status(409).json({
+    res.status(200).json({
       valid: false,
       param: "email",
       message: "existed",
+      status: -1,
     });
     return;
   }
@@ -259,10 +260,16 @@ export const register = async ({ body }, res, next) => {
 export const registerAddChild = async ({ body }, res, next) => {
   const user = await checkParentAccountExist(body.email);
   //tạo con
-  var userNew = await createChild(user._id, {
+  await createChild(user._id, {
     studentName: body.studentName,
     age: body.studentAge,
   });
+
+  var userNew = await User.findById(user._id).populate([
+    {
+      path: "students",
+    },
+  ]);
 
   return sign(userNew)
     .then((token) => ({ token, user: userNew.view(true) }))
