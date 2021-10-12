@@ -1,12 +1,12 @@
-import { Router } from 'express'
-import { middleware as query } from 'querymen'
-import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy } from './controller'
-import { schema } from './model'
-export Student, { schema } from './model'
+import { Router } from "express";
+import { middleware as query } from "querymen";
+import { middleware as body } from "bodymen";
+import { create, index, show, update, destroy } from "./controller";
+import { schema } from "./model";
+export Student, { schema } from "./model";
 
-const router = new Router()
-const { studentName, age } = schema.tree
+const router = new Router();
+const { studentName, age } = schema.tree;
 
 /**
  * @api {post} /student Create student
@@ -18,9 +18,7 @@ const { studentName, age } = schema.tree
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Student not found.
  */
-router.post('/',
-  body({ studentName, age }),
-  create)
+router.post("/", body({ studentName, age }), create);
 
 /**
  * @api {get} /student Retrieve students
@@ -30,9 +28,16 @@ router.post('/',
  * @apiSuccess {Object[]} students List of students.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/',
-  query(),
-  index)
+router.get(
+  "/",
+  query({
+    studentName: {
+      type: RegExp,
+      paths: ["studentName"],
+    },
+  }),
+  index
+);
 
 /**
  * @api {get} /student/:id Retrieve student
@@ -42,8 +47,7 @@ router.get('/',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Student not found.
  */
-router.get('/:id',
-  show)
+router.get("/:id", show);
 
 /**
  * @api {put} /student/:id Update student
@@ -55,9 +59,7 @@ router.get('/:id',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Student not found.
  */
-router.put('/:id',
-  body({ studentName, age }),
-  update)
+router.put("/:id", body({ studentName, age }), update);
 
 /**
  * @api {delete} /student/:id Delete student
@@ -66,7 +68,6 @@ router.put('/:id',
  * @apiSuccess (Success 204) 204 No Content.
  * @apiError 404 Student not found.
  */
-router.delete('/:id',
-  destroy)
+router.delete("/:id", destroy);
 
-export default router
+export default router;
