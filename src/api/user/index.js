@@ -14,6 +14,8 @@ import {
   update,
   updatePassword,
   destroy,
+  register,
+  registerAddChild,
 } from "./controller";
 import { schema } from "./model";
 export User, { schema } from "./model";
@@ -172,5 +174,18 @@ router.delete(
   token({ required: true, roles: ["admin", "super-admin"] }),
   destroy
 );
+
+/**
+ * @api {register} /users/register Register parent
+ * @apiName Register
+ * @apiGroup User
+ * @apiPermission user
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 401 Admin access only.
+ * @apiError 404 User not found.
+ */
+router.post("/register", register);
+
+router.post("/registerAddChild", passwordAuth(), registerAddChild);
 
 export default router;
