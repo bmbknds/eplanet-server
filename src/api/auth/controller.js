@@ -2,9 +2,19 @@ import { sign } from "../../services/jwt";
 import { success } from "../../services/response/";
 import * as menu_en from "./menu_en";
 import * as menu_vn from "./menu_vn";
+import { User } from "../user";
+
 export const login = ({ user }, res, next) => {
   return sign(user)
-    .then((token) => ({ token, user: user.view(true) }))
+    .then(async (token) => {
+      var userNew = await User.findById(user._id).populate([
+        {
+          path: "students",
+        },
+      ]);
+
+      return { token, user: userNew.view(true) };
+    })
     .then(success(res, 201))
     .catch(next);
 };
