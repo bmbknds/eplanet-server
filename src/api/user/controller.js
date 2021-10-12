@@ -205,10 +205,11 @@ export const register = async ({ body }, res, next) => {
   const checkEmail = await checkParentAccountExist(body.email);
   if (checkEmail) {
     console.log("aa", checkEmail);
-    res.status(409).json({
+    res.status(200).json({
       valid: false,
       param: "email",
       message: "existed",
+      status: -1,
     });
     return;
   }
