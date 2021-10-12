@@ -101,6 +101,30 @@ const adminMenu = [
     ],
   },
   {
+    path: "/dashboard/account",
+    name: "Tài khoản",
+    icon: "fas fa-user-graduate",
+    exact: true,
+    routes: [
+      {
+        path: "/dashboard/account/edit/:id",
+        name: "Chi tiết tài khoản",
+        icon: "fas fa-user-graduate",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+      {
+        path: "/dashboard/account/add",
+        name: "Thêm tài khoản",
+        icon: "fas fa-user-graduate",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+    ],
+  },
+  {
     path: "/dashboard/student",
     name: "Học sinh",
     icon: "fas fa-user-graduate",
@@ -109,14 +133,6 @@ const adminMenu = [
       {
         path: "/dashboard/student/edit/:id",
         name: "Chi tiết học sinh",
-        icon: "fas fa-user-graduate",
-        exact: true,
-        routes: [],
-        hideInMenu: true,
-      },
-      {
-        path: "/dashboard/student/add",
-        name: "Thêm học sinh",
         icon: "fas fa-user-graduate",
         exact: true,
         routes: [],
