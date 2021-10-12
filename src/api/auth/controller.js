@@ -18,12 +18,17 @@ export const login = ({ user }, res, next) => {
     .then(success(res, 201))
     .catch(next);
 };
-export const checkAuth = ({ user, headers }, res, next) => {
+export const checkAuth = async ({ user, headers }, res, next) => {
   // console.log(headers);
+  var userNew = await User.findById(user._id).populate([
+    {
+      path: "students",
+    },
+  ]);
   success(
     res,
     200
-  )({ user, token: headers.authorization.replace("Bearer ", "") });
+  )({ userNew, token: headers.authorization.replace("Bearer ", "") });
 };
 
 export const getMenu = ({ user, body }, res, next) => {
