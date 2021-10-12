@@ -42,8 +42,8 @@ const config = {
   development: {
     mongo: {
       uri: process.env.MONGODB_URI || "mongodb://localhost/e-planet-dev",
-      // user: "system",
-      // password: "Bmbknds13!@#",
+      user: "system",
+      password: "Bmbknds13!@#",
       options: {
         debug: true,
       },
