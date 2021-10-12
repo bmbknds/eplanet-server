@@ -77,3 +77,21 @@ export const generateRecord = async (body = null) => {
   } while (records.length < coursDetail.lessons);
   return records;
 };
+
+export const getTableSlots = (startHour, endHour) => {
+  const segments = [];
+  if (!startHour || !endHour) {
+    return segments;
+  }
+  let tempTime = "";
+  tempTime = startHour;
+  do {
+    const time = {
+      startTime: moment(tempTime, "HH:mm").format("HH:mm"),
+      endTime: moment(tempTime, "HH:mm").add(30, "minute").format("HH:mm"),
+    };
+    segments.push(time);
+    tempTime = time.endTime;
+  } while (moment(tempTime, "HH:mm").isBefore(moment(endHour, "HH:mm")));
+  return segments;
+};
