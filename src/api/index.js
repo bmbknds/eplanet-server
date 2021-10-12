@@ -1,13 +1,14 @@
 import { Router } from "express";
 import user from "./user";
+import student from "./student";
 import auth from "./auth";
 import passwordReset from "./password-reset";
 import cours from "./cours";
 
 import fileUpload from "./file-upload";
-import order from './order'
-import record from './record'
-import systemConfig from './system-config'
+import order from "./order";
+import record from "./record";
+import systemConfig from "./system-config";
 
 const router = new Router();
 
@@ -35,13 +36,14 @@ const router = new Router();
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 router.use("/users", user);
+router.use("/students", student);
 router.use("/auth", auth);
 router.use("/password-resets", passwordReset);
 router.use("/cours", cours);
 
 router.use("/file-uploads", fileUpload);
-router.use('/orders', order)
-router.use('/records', record)
-router.use('/system-configs', systemConfig)
+router.use("/orders", order);
+router.use("/records", record);
+router.use("/system-configs", systemConfig);
 
 export default router;

@@ -17,6 +17,10 @@ const studentSchema = new Schema(
     nickName: {
       type: String,
     },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
@@ -34,6 +38,7 @@ studentSchema.methods = {
     const view = {
       // simple view
       id: this.id,
+      parentId: this.parentId,
       studentName: this.studentName,
       age: this.age,
       skype: this.skype,
