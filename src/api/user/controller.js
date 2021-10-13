@@ -44,6 +44,7 @@ export const create = ({ bodymen: { body } }, res, next) => {
       console.log("\n>> Created Child:\n", body);
       //tạo con
       await createChild(user._id, {
+        parentId: user._id,
         studentName: body.name,
         age: body.studentInfor.age,
       });
@@ -224,6 +225,7 @@ export const register = async ({ body }, res, next) => {
       console.log("\n>> Created Child:\n", body);
       //tạo con
       await createChild(user._id, {
+        parentId: user._id,
         studentName: body.studentName,
         age: body.studentAge,
       });
@@ -261,6 +263,7 @@ export const registerAddChild = async ({ body }, res, next) => {
   const user = await checkParentAccountExist(body.email);
   //tạo con
   await createChild(user._id, {
+    parentId: user._id,
     studentName: body.studentName,
     age: body.studentAge,
   });
