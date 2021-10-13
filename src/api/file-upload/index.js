@@ -56,6 +56,16 @@ router.post(
   create
 );
 
+router.post(
+  "/file/:id",
+  token({
+    required: true,
+    roles: ["admin", "teacher", "super-admin", "student"],
+  }),
+  upload.single("file"),
+  create
+);
+
 /**
  * @api {get} /file-uploads/:id Retrieve file upload
  * @apiName RetrieveFileUpload

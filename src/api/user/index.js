@@ -31,6 +31,7 @@ const {
   phoneNumber,
   studentInfor,
   teacherInfor,
+  coursId,
 } = schema.tree;
 
 /**
@@ -114,6 +115,7 @@ router.post(
     teacherInfor,
     skype,
     phoneNumber,
+    coursId,
   }),
   create
 );
@@ -142,6 +144,7 @@ router.put(
     phoneNumber,
     studentInfor,
     teacherInfor,
+    coursId,
   }),
   update
 );
