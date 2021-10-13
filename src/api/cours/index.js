@@ -18,6 +18,7 @@ const {
   price,
   lessons,
   status,
+  documents,
 } = schema.tree;
 
 /**
@@ -67,6 +68,7 @@ router.post(
     price,
     lessons,
     status,
+    documents,
   }),
   create
 );
@@ -147,6 +149,7 @@ router.put(
     price,
     lessons,
     status,
+    documents,
   }),
   update
 );

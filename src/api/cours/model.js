@@ -33,6 +33,16 @@ const coursSchema = new Schema(
       type: String,
       default: "active",
     },
+    documents: [
+      {
+        name: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -62,6 +72,7 @@ coursSchema.methods = {
       status: this.status,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      documents: this.documents,
     };
     return view;
   },
