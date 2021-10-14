@@ -72,7 +72,7 @@ export const importData = ({ body }, res, next) => {
           phoneNumber: item.parentTel,
           gender: item.parentGender,
         });
-        parent = parentCreated._id;
+        parentId = parentCreated._id;
       }
 
       //tạo con
