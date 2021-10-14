@@ -77,6 +77,10 @@ const userSchema = new Schema(
         ref: "Cours",
       },
     ],
+    canLearnTrial: {
+      type: String,
+      default: 1,
+    },
   },
   {
     timestamps: true,
@@ -125,6 +129,7 @@ userSchema.methods = {
       "phoneNumber",
       "email",
       "coursId",
+      "canLearnTrial",
     ];
 
     if (full) {
