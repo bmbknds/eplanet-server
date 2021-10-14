@@ -23,6 +23,7 @@ export const show = ({ params }, res, next) =>
     .catch(next);
 
 export const update = ({ bodymen: { body }, params }, res, next) => {
+  console.log(body);
   return Cours.findById(params.id)
     .then(notFound(res))
     .then((cours) =>

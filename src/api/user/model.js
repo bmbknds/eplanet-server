@@ -71,6 +71,12 @@ const userSchema = new Schema(
         ref: "Student",
       },
     ],
+    coursId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cours",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -118,6 +124,7 @@ userSchema.methods = {
       "skype",
       "phoneNumber",
       "email",
+      "coursId",
     ];
 
     if (full) {

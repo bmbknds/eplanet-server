@@ -19,6 +19,12 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) => {
 
 export const show = ({ params }, res, next) =>
   User.findById(params.id)
+    .populate([
+      {
+        path: "coursId",
+        select: "name",
+      },
+    ])
     .then(notFound(res))
     .then((user) => (user ? user.view(true) : null))
     .then(success(res))
@@ -41,13 +47,14 @@ const createChild = function (parentId, child) {
 export const create = ({ bodymen: { body } }, res, next) => {
   return User.create(body)
     .then(async (user) => {
-      console.log("\n>> Created Child:\n", body);
       //tạo con
-      await createChild(user._id, {
-        parentId: user._id,
-        studentName: body.name,
-        age: body.studentInfor.age,
-      });
+      if (user.role == "student") {
+        await createChild(user._id, {
+          parentId: user._id,
+          studentName: body.name,
+          age: body.studentInfor.age,
+        });
+      }
 
       sign(user.id)
         .then((token) => ({ token, user: user.view(true) }))
@@ -57,6 +64,7 @@ export const create = ({ bodymen: { body } }, res, next) => {
       // console.log(err.errors);
       /* istanbul ignore else */
       if (err.errors) {
+        console.log(err.errors);
         let message = "";
         Object.keys(err.errors).forEach((item) => {
           if (item === "email") {

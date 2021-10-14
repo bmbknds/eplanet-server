@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { extname } from "path";
 import { token } from "../../services/passport";
 import { create, show, uploadFinalReport } from "./controller";
 const multer = require("multer");
@@ -17,17 +18,24 @@ var storage = multer.diskStorage({
     cb(null, req.params.id + "-" + Date.now() + ".png");
   },
 });
+
 var fileStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(
-      null,
-      path.join(__dirname, `assets/files`).replace("/src/api/file-upload", "")
-    );
+  destination: function ({ params }, file, cb) {
+    var dir = path
+      .join(__dirname, `assets/files`)
+      .replace("src/api/file-upload", "");
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
   },
   filename: function ({ params }, file, cb) {
     cb(
       null,
-      params.id || params.orderId + "-" + Date.now() + file.originalname
+      (params.id || params.orderId) +
+        "-" +
+        Date.now() +
+        extname(file.originalname)
     );
   },
 });
