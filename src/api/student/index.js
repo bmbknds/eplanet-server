@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { middleware as query } from "querymen";
 import { middleware as body } from "bodymen";
-import { create, index, show, update, destroy } from "./controller";
+import { create, index, show, update, destroy, importData } from "./controller";
 import { schema } from "./model";
 export Student, { schema } from "./model";
 
@@ -69,5 +69,7 @@ router.put("/:id", body({ studentName, age }), update);
  * @apiError 404 Student not found.
  */
 router.delete("/:id", destroy);
+
+router.post("/import", importData);
 
 export default router;

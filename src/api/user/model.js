@@ -81,6 +81,9 @@ const userSchema = new Schema(
       type: String,
       default: 1,
     },
+    gender: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -130,6 +133,7 @@ userSchema.methods = {
       "email",
       "coursId",
       "canLearnTrial",
+      "gender",
     ];
 
     if (full) {
