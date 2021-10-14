@@ -77,7 +77,7 @@ export const importData = ({ body }, res, next) => {
 
       //tạo con
       await createChild(parentId, {
-        parentId: parent._id,
+        parentId: parentId,
         studentName: item.studentName,
         age: item.age,
         idNumber: item.idNumber,
