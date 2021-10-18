@@ -21,6 +21,16 @@ const studentSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    idNumber: {
+      type: String,
+      unique: true,
+    },
+    note: {
+      type: String,
+    },
+    facebook: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -46,6 +56,9 @@ studentSchema.methods = {
       nickname: this.nickName,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      idNumber: this.idNumber,
+      note: this.note,
+      facebook: this.facebook,
     };
 
     return full

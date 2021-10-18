@@ -18,13 +18,10 @@ export const create = async ({ body }, res, next) => {
     body.coursDetail = cours;
     body._id = new objectId();
 
-    const records = await generateRecord(body);
-    return Record.insertMany(records).then(
-      Order.create(body)
-        .then((order) => order.view(true))
-        .then(success(res, 201))
-        .catch(next)
-    );
+    return Order.create(body)
+      .then((order) => order.view(true))
+      .then(success(res, 201))
+      .catch(next);
     // return res.status(500).json(records);
   } catch (err) {
     next(err);

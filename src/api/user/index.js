@@ -16,6 +16,7 @@ import {
   destroy,
   register,
   registerAddChild,
+  updateCanLearnTrial,
 } from "./controller";
 import { schema } from "./model";
 export User, { schema } from "./model";
@@ -32,6 +33,8 @@ const {
   studentInfor,
   teacherInfor,
   coursId,
+  canLearnTrial,
+  gender,
 } = schema.tree;
 
 /**
@@ -145,6 +148,8 @@ router.put(
     studentInfor,
     teacherInfor,
     coursId,
+    canLearnTrial,
+    gender,
   }),
   update
 );
@@ -190,5 +195,7 @@ router.delete(
 router.post("/register", register);
 
 router.post("/registerAddChild", passwordAuth(), registerAddChild);
+
+router.put("/:id/canLearnTrial", body({ canLearnTrial }), updateCanLearnTrial);
 
 export default router;
