@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { middleware as query } from "querymen";
 import { middleware as body } from "bodymen";
-import { create, index, show, update, destroy } from "./controller";
+import { create, index, show, update, destroy, importData } from "./controller";
 import { schema } from "./model";
 export Student, { schema } from "./model";
 
 const router = new Router();
-const { studentName, age } = schema.tree;
+const { studentName, age, avatar, facebook, nickName, idNumber, note, skype } =
+  schema.tree;
 
 /**
  * @api {post} /student Create student
@@ -59,7 +60,11 @@ router.get("/:id", show);
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Student not found.
  */
-router.put("/:id", body({ studentName, age }), update);
+router.put(
+  "/:id",
+  body({ studentName, age, skype, avatar, facebook, nickName, idNumber, note }),
+  update
+);
 
 /**
  * @api {delete} /student/:id Delete student
@@ -69,5 +74,7 @@ router.put("/:id", body({ studentName, age }), update);
  * @apiError 404 Student not found.
  */
 router.delete("/:id", destroy);
+
+router.post("/import", importData);
 
 export default router;

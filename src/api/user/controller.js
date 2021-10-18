@@ -287,3 +287,22 @@ export const registerAddChild = async ({ body }, res, next) => {
     .then(success(res, 201))
     .catch(next);
 };
+
+export const updateCanLearnTrial = (
+  { bodymen: { body }, params, user },
+  res,
+  next
+) => {
+  return User.findById(params.id)
+    .then(notFound(res))
+    .then((result) => {
+      if (!result) return null;
+      result.canLearnTrial = body.canLearnTrial == 1 ? 1 : 0;
+      return result.save();
+    })
+    .then((user) => (user ? user.view(true) : null))
+    .then(success(res))
+    .catch((err) => {
+      next(err);
+    });
+};
