@@ -53,7 +53,7 @@ studentSchema.methods = {
       age: this.age,
       skype: this.skype,
       avatar: this.avatar,
-      nickname: this.nickName,
+      nickName: this.nickName,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       idNumber: this.idNumber,
