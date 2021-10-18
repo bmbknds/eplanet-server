@@ -147,6 +147,8 @@ router.put(
     studentInfor,
     teacherInfor,
     coursId,
+    canLearnTrial,
+    gender,
   }),
   update
 );

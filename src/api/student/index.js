@@ -59,7 +59,11 @@ router.get("/:id", show);
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Student not found.
  */
-router.put("/:id", body({ studentName, age }), update);
+router.put(
+  "/:id",
+  body({ studentName, age, skype, avatar, facebook, nickName, idNumber, note }),
+  update
+);
 
 /**
  * @api {delete} /student/:id Delete student
