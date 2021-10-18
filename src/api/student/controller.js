@@ -17,7 +17,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
 
 export const show = ({ params }, res, next) =>
   Student.findById(params.id)
-    .populate("parentId", "_id, name")
+    .populate("parentId", "_id name email phoneNumber")
     .then(notFound(res))
     .then((student) => (student ? student.view() : null))
     .then(success(res))
