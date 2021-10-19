@@ -21,7 +21,7 @@ export const show = ({ params }, res, next) =>
   User.findById(params.id)
     .populate([
       {
-        path: "coursId",
+        path: "courseId",
         select: "name",
       },
     ])

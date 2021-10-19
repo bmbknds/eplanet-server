@@ -1,6 +1,6 @@
 import { success, notFound } from "../../services/response/";
 import { Order } from ".";
-import Cours from "../cours/model";
+import Course from "../course/model";
 import Users from "../user/model";
 import Record from "../record/model";
 import { generateRecord } from "../../utils/index";
@@ -11,11 +11,11 @@ const objectId = mongoose.Types.ObjectId;
 
 export const create = async ({ body }, res, next) => {
   try {
-    const cours = await Cours.findById(body.coursId);
-    if (!cours) {
-      return res.status(400).json({ message: "This cours is not available." });
+    const course = await Course.findById(body.courseId);
+    if (!course) {
+      return res.status(400).json({ message: "This course is not available." });
     }
-    body.coursDetail = cours;
+    body.courseDetail = course;
     body._id = new objectId();
 
     return Order.create(body)
@@ -140,7 +140,7 @@ export const show = ({ params }, res, next) =>
 
 export const update = ({ body, params }, res, next) => {
   return Order.findById(params.id)
-    .populate({ path: "cours" })
+    .populate({ path: "course" })
     .then(notFound(res))
     .then(async (order) => {
       if (body.status === "active") {
@@ -253,7 +253,7 @@ export const getPendingForAdmin = (req, res, next) => {
     .populate([
       { path: "student", select: "name phoneNumber" },
       { path: "teacher", select: "name" },
-      { path: "cours" },
+      { path: "course" },
     ])
 
     .then(success(res))

@@ -38,7 +38,7 @@ const recordSchema = new Schema(
       type: String,
       required: true,
     },
-    coursId: {
+    courseId: {
       type: String,
       required: true,
     },
@@ -91,7 +91,7 @@ recordSchema.virtual("student", {
   foreignField: "_id",
   justOne: true,
 });
-recordSchema.index({ teacherId: 1, studentId: 1, coursId: 1, orderId: 1 });
+recordSchema.index({ teacherId: 1, studentId: 1, courseId: 1, orderId: 1 });
 const model = mongoose.model("Record", recordSchema);
 
 export const schema = model.schema;

@@ -4,7 +4,7 @@ import { middleware as body } from "bodymen";
 import { token } from "../../services/passport";
 import { create, index, show, update, destroy, getPublic } from "./controller";
 import { schema } from "./model";
-export Cours, { schema } from "./model";
+export Course, { schema } from "./model";
 
 const router = new Router();
 const {
@@ -22,36 +22,36 @@ const {
 } = schema.tree;
 
 /**
- * @api {get} /cours/public Get Public Courses
- * @apiName GetPublicCourse ( for guess )
- * @apiGroup Cours
+ * @api {get} /course/public Get Public Coursees
+ * @apiName GetPublicCoursee ( for guess )
+ * @apiGroup Course
 
  * @apiUse listParams
- * @apiSuccess {Object[]} cours List of cours.
+ * @apiSuccess {Object[]} course List of course.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 admin access only.
  */
 
 router.get("/public", getPublic);
 /**
- * @api {post} /cours Create cours
- * @apiName CreateCours
- * @apiGroup Cours
+ * @api {post} /course Create course
+ * @apiName CreateCourse
+ * @apiGroup Course
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.
- * @apiParam name Cours's name.
- * @apiParam title Cours's title.
- * @apiParam introText Cours's introText.
- * @apiParam introImage Cours's introImage.
- * @apiParam targetText Cours's targetText.
- * @apiParam targetImage Cours's targetImage.
- * @apiParam activeTime Cours's activeTime.
- * @apiParam price Cours's price.
- * @apiParam lessons Cours's lessons.
- * @apiParam status Cours's status.
- * @apiSuccess {Object} cours Cours's data.
+ * @apiParam name Course's name.
+ * @apiParam title Course's title.
+ * @apiParam introText Course's introText.
+ * @apiParam introImage Course's introImage.
+ * @apiParam targetText Course's targetText.
+ * @apiParam targetImage Course's targetImage.
+ * @apiParam activeTime Course's activeTime.
+ * @apiParam price Course's price.
+ * @apiParam lessons Course's lessons.
+ * @apiParam status Course's status.
+ * @apiSuccess {Object} course Course's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Cours not found.
+ * @apiError 404 Course not found.
  * @apiError 401 admin access only.
  */
 router.post(
@@ -74,13 +74,13 @@ router.post(
 );
 
 /**
- * @api {get} /cours Retrieve cours
- * @apiName RetrieveCours
- * @apiGroup Cours
+ * @api {get} /course Retrieve course
+ * @apiName RetrieveCourse
+ * @apiGroup Course
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.
  * @apiUse listParams
- * @apiSuccess {Object[]} cours List of cours.
+ * @apiSuccess {Object[]} course List of course.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 admin access only.
  */
@@ -98,14 +98,14 @@ router.get(
 );
 
 /**
- * @api {get} /cours/:id Retrieve cour
- * @apiName Detail Cours
- * @apiGroup Cours
+ * @api {get} /course/:id Retrieve cour
+ * @apiName Detail Course
+ * @apiGroup Course
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.
- * @apiSuccess {Object} cours Cours's data.
+ * @apiSuccess {Object} course Course's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Cours not found.
+ * @apiError 404 Course not found.
  * @apiError 401 admin access only.
  */
 router.get(
@@ -115,24 +115,24 @@ router.get(
 );
 
 /**
- * @api {put} /cours/:id Update cours
- * @apiName UpdateCours
- * @apiGroup Cours
+ * @api {put} /course/:id Update course
+ * @apiName UpdateCourse
+ * @apiGroup Course
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.
- * @apiParam name Cours's name.
- * @apiParam title Cours's title.
- * @apiParam introText Cours's introText.
- * @apiParam introImage Cours's introImage.
- * @apiParam targetText Cours's targetText.
- * @apiParam targetImage Cours's targetImage.
- * @apiParam activeTime Cours's activeTime.
- * @apiParam price Cours's price.
- * @apiParam lessons Cours's lessons.
- * @apiParam status Cours's status.
- * @apiSuccess {Object} cours Cours's data.
+ * @apiParam name Course's name.
+ * @apiParam title Course's title.
+ * @apiParam introText Course's introText.
+ * @apiParam introImage Course's introImage.
+ * @apiParam targetText Course's targetText.
+ * @apiParam targetImage Course's targetImage.
+ * @apiParam activeTime Course's activeTime.
+ * @apiParam price Course's price.
+ * @apiParam lessons Course's lessons.
+ * @apiParam status Course's status.
+ * @apiSuccess {Object} course Course's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Cours not found.
+ * @apiError 404 Course not found.
  * @apiError 401 admin access only.
  */
 router.put(
@@ -155,13 +155,13 @@ router.put(
 );
 
 /**
- * @api {delete} /cours/:id Delete cours
- * @apiName DeleteCours
- * @apiGroup Cours
+ * @api {delete} /course/:id Delete course
+ * @apiName DeleteCourse
+ * @apiGroup Course
  * @apiPermission admin
  * @apiParam {String} access_token admin access token.
  * @apiSuccess (Success 204) 204 No Content.
- * @apiError 404 Cours not found.
+ * @apiError 404 Course not found.
  * @apiError 401 admin access only.
  */
 router.delete(

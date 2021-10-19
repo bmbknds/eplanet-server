@@ -1,638 +1,506 @@
 # e-planet v0.0.0
 
-
-
 - [Auth](#auth)
-	- [Authenticate](#authenticate)
-	
-- [Cours](#cours)
-	- [Create cours](#create-cours)
-	- [Delete cours](#delete-cours)
-	- [Retrieve cour](#retrieve-cour)
-	- [Get Public Courses](#get-public-courses)
-	- [Retrieve cours](#retrieve-cours)
-	- [Update cours](#update-cours)
-	
+  - [Authenticate](#authenticate)
+- [Course](#course)
+  - [Create course](#create-course)
+  - [Delete course](#delete-course)
+  - [Retrieve cour](#retrieve-cour)
+  - [Get Public Coursees](#get-public-coursees)
+  - [Retrieve course](#retrieve-course)
+  - [Update course](#update-course)
 - [FileUpload](#fileupload)
-	- [Create file upload](#create-file-upload)
-	- [Retrieve file upload](#retrieve-file-upload)
-	
+  - [Create file upload](#create-file-upload)
+  - [Retrieve file upload](#retrieve-file-upload)
 - [Order](#order)
-	- [Create order](#create-order)
-	- [Delete order](#delete-order)
-	- [Retrieve order](#retrieve-order)
-	- [Retrieve orders](#retrieve-orders)
-	- [Update order](#update-order)
-	
+  - [Create order](#create-order)
+  - [Delete order](#delete-order)
+  - [Retrieve order](#retrieve-order)
+  - [Retrieve orders](#retrieve-orders)
+  - [Update order](#update-order)
 - [PasswordReset](#passwordreset)
-	- [Send email](#send-email)
-	- [Submit password](#submit-password)
-	- [Verify token](#verify-token)
-	
+  - [Send email](#send-email)
+  - [Submit password](#submit-password)
+  - [Verify token](#verify-token)
 - [Record](#record)
-	- [Create record](#create-record)
-	- [Delete record](#delete-record)
-	- [Retrieve record](#retrieve-record)
-	- [Retrieve records](#retrieve-records)
-	- [Update record](#update-record)
-	
+  - [Create record](#create-record)
+  - [Delete record](#delete-record)
+  - [Retrieve record](#retrieve-record)
+  - [Retrieve records](#retrieve-records)
+  - [Update record](#update-record)
 - [Student](#student)
-	- [Create student](#create-student)
-	- [Delete student](#delete-student)
-	- [Retrieve student](#retrieve-student)
-	- [Retrieve students](#retrieve-students)
-	- [Update student](#update-student)
-	
+  - [Create student](#create-student)
+  - [Delete student](#delete-student)
+  - [Retrieve student](#retrieve-student)
+  - [Retrieve students](#retrieve-students)
+  - [Update student](#update-student)
 - [SystemConfig](#systemconfig)
-	- [Create system config](#create-system-config)
-	- [Delete system config](#delete-system-config)
-	- [Retrieve system config](#retrieve-system-config)
-	- [Retrieve system configs](#retrieve-system-configs)
-	- [Update system config](#update-system-config)
-	
+  - [Create system config](#create-system-config)
+  - [Delete system config](#delete-system-config)
+  - [Retrieve system config](#retrieve-system-config)
+  - [Retrieve system configs](#retrieve-system-configs)
+  - [Update system config](#update-system-config)
 - [User](#user)
-	- [Create user](#create-user)
-	- [Delete user](#delete-user)
-	- [Register parent](#register-parent)
-	- [Retrieve current user](#retrieve-current-user)
-	- [Retrieve user](#retrieve-user)
-	- [Retrieve users](#retrieve-users)
-	- [Update password](#update-password)
-	- [Update user](#update-user)
-	
-
+  - [Create user](#create-user)
+  - [Delete user](#delete-user)
+  - [Register parent](#register-parent)
+  - [Retrieve current user](#retrieve-current-user)
+  - [Retrieve user](#retrieve-user)
+  - [Retrieve users](#retrieve-users)
+  - [Update password](#update-password)
+  - [Update user](#update-user)
 
 # Auth
 
 ## Authenticate
 
-
-
-	POST /auth/login
+    POST /auth/login
 
 ### Headers
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| Authorization			| String			|  <p>Basic authorization with email and password.</p>							|
+| Name          | Type   | Description                                         |
+| ------------- | ------ | --------------------------------------------------- |
+| Authorization | String | <p>Basic authorization with email and password.</p> |
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>Master access_token.</p>							|
+| Name         | Type   | Description                 |
+| ------------ | ------ | --------------------------- |
+| access_token | String | <p>Master access_token.</p> |
 
-# Cours
+# Course
 
-## Create cours
+## Create course
 
-
-
-	POST /cours
-
+    POST /course
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| name			| 			|  <p>Cours's name.</p>							|
-| title			| 			|  <p>Cours's title.</p>							|
-| introText			| 			|  <p>Cours's introText.</p>							|
-| introImage			| 			|  <p>Cours's introImage.</p>							|
-| targetText			| 			|  <p>Cours's targetText.</p>							|
-| targetImage			| 			|  <p>Cours's targetImage.</p>							|
-| activeTime			| 			|  <p>Cours's activeTime.</p>							|
-| price			| 			|  <p>Cours's price.</p>							|
-| lessons			| 			|  <p>Cours's lessons.</p>							|
-| status			| 			|  <p>Cours's status.</p>							|
+| Name         | Type   | Description                  |
+| ------------ | ------ | ---------------------------- |
+| access_token | String | <p>admin access token.</p>   |
+| name         |        | <p>Course's name.</p>        |
+| title        |        | <p>Course's title.</p>       |
+| introText    |        | <p>Course's introText.</p>   |
+| introImage   |        | <p>Course's introImage.</p>  |
+| targetText   |        | <p>Course's targetText.</p>  |
+| targetImage  |        | <p>Course's targetImage.</p> |
+| activeTime   |        | <p>Course's activeTime.</p>  |
+| price        |        | <p>Course's price.</p>       |
+| lessons      |        | <p>Course's lessons.</p>     |
+| status       |        | <p>Course's status.</p>      |
 
-## Delete cours
+## Delete course
 
-
-
-	DELETE /cours/:id
-
+    DELETE /course/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
 ## Retrieve cour
 
-
-
-	GET /cours/:id
-
+    GET /course/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
-## Get Public Courses
+## Get Public Coursees
 
-
-
-	GET /cours/public
-
+    GET /course/public
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name   | Type     | Description                                   |
+| ------ | -------- | --------------------------------------------- |
+| q      | String   | **optional** <p>Query to search.</p>          |
+| page   | Number   | **optional** <p>Page number.</p>              |
+| limit  | Number   | **optional** <p>Amount of returned items.</p> |
+| sort   | String[] | **optional** <p>Order of returned items.</p>  |
+| fields | String[] | **optional** <p>Fields to be returned.</p>    |
 
-## Retrieve cours
+## Retrieve course
 
-
-
-	GET /cours
-
+    GET /course
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name         | Type     | Description                                   |
+| ------------ | -------- | --------------------------------------------- |
+| access_token | String   | <p>admin access token.</p>                    |
+| q            | String   | **optional** <p>Query to search.</p>          |
+| page         | Number   | **optional** <p>Page number.</p>              |
+| limit        | Number   | **optional** <p>Amount of returned items.</p> |
+| sort         | String[] | **optional** <p>Order of returned items.</p>  |
+| fields       | String[] | **optional** <p>Fields to be returned.</p>    |
 
-## Update cours
+## Update course
 
-
-
-	PUT /cours/:id
-
+    PUT /course/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| name			| 			|  <p>Cours's name.</p>							|
-| title			| 			|  <p>Cours's title.</p>							|
-| introText			| 			|  <p>Cours's introText.</p>							|
-| introImage			| 			|  <p>Cours's introImage.</p>							|
-| targetText			| 			|  <p>Cours's targetText.</p>							|
-| targetImage			| 			|  <p>Cours's targetImage.</p>							|
-| activeTime			| 			|  <p>Cours's activeTime.</p>							|
-| price			| 			|  <p>Cours's price.</p>							|
-| lessons			| 			|  <p>Cours's lessons.</p>							|
-| status			| 			|  <p>Cours's status.</p>							|
+| Name         | Type   | Description                  |
+| ------------ | ------ | ---------------------------- |
+| access_token | String | <p>admin access token.</p>   |
+| name         |        | <p>Course's name.</p>        |
+| title        |        | <p>Course's title.</p>       |
+| introText    |        | <p>Course's introText.</p>   |
+| introImage   |        | <p>Course's introImage.</p>  |
+| targetText   |        | <p>Course's targetText.</p>  |
+| targetImage  |        | <p>Course's targetImage.</p> |
+| activeTime   |        | <p>Course's activeTime.</p>  |
+| price        |        | <p>Course's price.</p>       |
+| lessons      |        | <p>Course's lessons.</p>     |
+| status       |        | <p>Course's status.</p>      |
 
 # FileUpload
 
 ## Create file upload
 
-
-
-	POST /file-uploads
-
+    POST /file-uploads
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
 ## Retrieve file upload
 
-
-
-	GET /file-uploads/:id
-
+    GET /file-uploads/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
 # Order
 
 ## Create order
 
-
-
-	POST /orders
-
+    POST /orders
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| studentId			| 			|  <p>Order's studentId.</p>							|
-| teacherId			| 			|  <p>Order's teacherId.</p>							|
-| timeTable			| 			|  <p>Order's timeTable.</p>							|
-| coursId			| 			|  <p>Order's coursId.</p>							|
-| records			| 			|  <p>Order's records.</p>							|
+| Name      | Type | Description               |
+| --------- | ---- | ------------------------- |
+| studentId |      | <p>Order's studentId.</p> |
+| teacherId |      | <p>Order's teacherId.</p> |
+| timeTable |      | <p>Order's timeTable.</p> |
+| courseId  |      | <p>Order's courseId.</p>  |
+| records   |      | <p>Order's records.</p>   |
 
 ## Delete order
 
-
-
-	DELETE /orders/:id
-
+    DELETE /orders/:id
 
 ## Retrieve order
 
-
-
-	GET /orders/:id
-
+    GET /orders/:id
 
 ## Retrieve orders
 
-
-
-	GET /orders
-
+    GET /orders
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name   | Type     | Description                                   |
+| ------ | -------- | --------------------------------------------- |
+| q      | String   | **optional** <p>Query to search.</p>          |
+| page   | Number   | **optional** <p>Page number.</p>              |
+| limit  | Number   | **optional** <p>Amount of returned items.</p> |
+| sort   | String[] | **optional** <p>Order of returned items.</p>  |
+| fields | String[] | **optional** <p>Fields to be returned.</p>    |
 
 ## Update order
 
-
-
-	PUT /orders/:id
-
+    PUT /orders/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| studentId			| 			|  <p>Order's studentId.</p>							|
-| teacherId			| 			|  <p>Order's teacherId.</p>							|
-| timeTable			| 			|  <p>Order's timeTable.</p>							|
-| coursId			| 			|  <p>Order's coursId.</p>							|
-| records			| 			|  <p>Order's records.</p>							|
+| Name      | Type | Description               |
+| --------- | ---- | ------------------------- |
+| studentId |      | <p>Order's studentId.</p> |
+| teacherId |      | <p>Order's teacherId.</p> |
+| timeTable |      | <p>Order's timeTable.</p> |
+| courseId  |      | <p>Order's courseId.</p>  |
+| records   |      | <p>Order's records.</p>   |
 
 # PasswordReset
 
 ## Send email
 
-
-
-	POST /password-resets
-
+    POST /password-resets
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| email			| String			|  <p>Email address to receive the password reset token.</p>							|
-| link			| String			|  <p>Link to redirect user.</p>							|
+| Name  | Type   | Description                                               |
+| ----- | ------ | --------------------------------------------------------- |
+| email | String | <p>Email address to receive the password reset token.</p> |
+| link  | String | <p>Link to redirect user.</p>                             |
 
 ## Submit password
 
-
-
-	PUT /password-resets/:token
-
+    PUT /password-resets/:token
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| password			| String			|  <p>User's new password.</p>							|
+| Name     | Type   | Description                 |
+| -------- | ------ | --------------------------- |
+| password | String | <p>User's new password.</p> |
 
 ## Verify token
 
-
-
-	GET /password-resets/:token
-
+    GET /password-resets/:token
 
 # Record
 
 ## Create record
 
-
-
-	POST /records
-
+    POST /records
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| status			| 			|  <p>Record's status.</p>							|
-| studentComment			| 			|  <p>Record's studentComment.</p>							|
-| teacherComment			| 			|  <p>Record's teacherComment.</p>							|
+| Name           | Type | Description                     |
+| -------------- | ---- | ------------------------------- |
+| status         |      | <p>Record's status.</p>         |
+| studentComment |      | <p>Record's studentComment.</p> |
+| teacherComment |      | <p>Record's teacherComment.</p> |
 
 ## Delete record
 
-
-
-	DELETE /records/:id
-
+    DELETE /records/:id
 
 ## Retrieve record
 
-
-
-	GET /records/:id
-
+    GET /records/:id
 
 ## Retrieve records
 
-
-
-	GET /records
-
+    GET /records
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name   | Type     | Description                                   |
+| ------ | -------- | --------------------------------------------- |
+| q      | String   | **optional** <p>Query to search.</p>          |
+| page   | Number   | **optional** <p>Page number.</p>              |
+| limit  | Number   | **optional** <p>Amount of returned items.</p> |
+| sort   | String[] | **optional** <p>Order of returned items.</p>  |
+| fields | String[] | **optional** <p>Fields to be returned.</p>    |
 
 ## Update record
 
-
-
-	PUT /records/:id
-
+    PUT /records/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| status			| 			|  <p>Record's status.</p>							|
-| studentComment			| 			|  <p>Record's studentComment.</p>							|
-| teacherComment			| 			|  <p>Record's teacherComment.</p>							|
+| Name           | Type | Description                     |
+| -------------- | ---- | ------------------------------- |
+| status         |      | <p>Record's status.</p>         |
+| studentComment |      | <p>Record's studentComment.</p> |
+| teacherComment |      | <p>Record's teacherComment.</p> |
 
 # Student
 
 ## Create student
 
-
-
-	POST /student
-
+    POST /student
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| studentName			| 			|  <p>Student's studentName.</p>							|
-| age			| 			|  <p>Student's age.</p>							|
+| Name        | Type | Description                   |
+| ----------- | ---- | ----------------------------- |
+| studentName |      | <p>Student's studentName.</p> |
+| age         |      | <p>Student's age.</p>         |
 
 ## Delete student
 
-
-
-	DELETE /student/:id
-
+    DELETE /student/:id
 
 ## Retrieve student
 
-
-
-	GET /student/:id
-
+    GET /student/:id
 
 ## Retrieve students
 
-
-
-	GET /student
-
+    GET /student
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name   | Type     | Description                                   |
+| ------ | -------- | --------------------------------------------- |
+| q      | String   | **optional** <p>Query to search.</p>          |
+| page   | Number   | **optional** <p>Page number.</p>              |
+| limit  | Number   | **optional** <p>Amount of returned items.</p> |
+| sort   | String[] | **optional** <p>Order of returned items.</p>  |
+| fields | String[] | **optional** <p>Fields to be returned.</p>    |
 
 ## Update student
 
-
-
-	PUT /student/:id
-
+    PUT /student/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| studentName			| 			|  <p>Student's studentName.</p>							|
-| age			| 			|  <p>Student's age.</p>							|
+| Name        | Type | Description                   |
+| ----------- | ---- | ----------------------------- |
+| studentName |      | <p>Student's studentName.</p> |
+| age         |      | <p>Student's age.</p>         |
 
 # SystemConfig
 
 ## Create system config
 
-
-
-	POST /system-configs
-
+    POST /system-configs
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| key			| 			|  <p>System config's key.</p>							|
-| description			| 			|  <p>System config's description.</p>							|
-| value			| 			|  <p>System config's value.</p>							|
+| Name         | Type   | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| access_token | String | <p>admin access token.</p>          |
+| key          |        | <p>System config's key.</p>         |
+| description  |        | <p>System config's description.</p> |
+| value        |        | <p>System config's value.</p>       |
 
 ## Delete system config
 
-
-
-	DELETE /system-configs/:id
-
+    DELETE /system-configs/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
 ## Retrieve system config
 
-
-
-	GET /system-configs/:id
-
+    GET /system-configs/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
+| Name         | Type   | Description                |
+| ------------ | ------ | -------------------------- |
+| access_token | String | <p>admin access token.</p> |
 
 ## Retrieve system configs
 
-
-
-	GET /system-configs
-
+    GET /system-configs
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name         | Type     | Description                                   |
+| ------------ | -------- | --------------------------------------------- |
+| access_token | String   | <p>admin access token.</p>                    |
+| q            | String   | **optional** <p>Query to search.</p>          |
+| page         | Number   | **optional** <p>Page number.</p>              |
+| limit        | Number   | **optional** <p>Amount of returned items.</p> |
+| sort         | String[] | **optional** <p>Order of returned items.</p>  |
+| fields       | String[] | **optional** <p>Fields to be returned.</p>    |
 
 ## Update system config
 
-
-
-	PUT /system-configs/:id
-
+    PUT /system-configs/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>admin access token.</p>							|
-| key			| 			|  <p>System config's key.</p>							|
-| description			| 			|  <p>System config's description.</p>							|
-| value			| 			|  <p>System config's value.</p>							|
+| Name         | Type   | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| access_token | String | <p>admin access token.</p>          |
+| key          |        | <p>System config's key.</p>         |
+| description  |        | <p>System config's description.</p> |
+| value        |        | <p>System config's value.</p>       |
 
 # User
 
 ## Create user
 
-
-
-	POST /users/create
-
+    POST /users/create
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>Master access_token.</p>							|
-| email			| String			|  <p>User's email.</p>							|
-| password			| String			|  <p>User's password.</p>							|
-| name			| String			| **optional** <p>User's name.</p>							|
-| picture			| String			| **optional** <p>User's picture.</p>							|
-| role			| String			| **optional** <p>User's role.</p>							|
+| Name         | Type   | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| access_token | String | <p>Master access_token.</p>         |
+| email        | String | <p>User's email.</p>                |
+| password     | String | <p>User's password.</p>             |
+| name         | String | **optional** <p>User's name.</p>    |
+| picture      | String | **optional** <p>User's picture.</p> |
+| role         | String | **optional** <p>User's role.</p>    |
 
 ## Delete user
 
-
-
-	DELETE /users/:id
-
+    DELETE /users/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>User access_token.</p>							|
+| Name         | Type   | Description               |
+| ------------ | ------ | ------------------------- |
+| access_token | String | <p>User access_token.</p> |
 
 ## Register parent
 
-
-
-	REGISTER /users/register
-
+    REGISTER /users/register
 
 ## Retrieve current user
 
-
-
-	GET /users/me
-
+    GET /users/me
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>User access_token.</p>							|
+| Name         | Type   | Description               |
+| ------------ | ------ | ------------------------- |
+| access_token | String | <p>User access_token.</p> |
 
 ## Retrieve user
 
-
-
-	GET /users/:id
-
+    GET /users/:id
 
 ## Retrieve users
 
-
-
-	GET /users
-
+    GET /users
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>User access_token.</p>							|
-| q			| String			| **optional** <p>Query to search.</p>							|
-| page			| Number			| **optional** <p>Page number.</p>							|
-| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
-| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
-| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+| Name         | Type     | Description                                   |
+| ------------ | -------- | --------------------------------------------- |
+| access_token | String   | <p>User access_token.</p>                     |
+| q            | String   | **optional** <p>Query to search.</p>          |
+| page         | Number   | **optional** <p>Page number.</p>              |
+| limit        | Number   | **optional** <p>Amount of returned items.</p> |
+| sort         | String[] | **optional** <p>Order of returned items.</p>  |
+| fields       | String[] | **optional** <p>Fields to be returned.</p>    |
 
 ## Update password
 
-
-
-	PUT /users/:id/password
+    PUT /users/:id/password
 
 ### Headers
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| Authorization			| String			|  <p>Basic authorization with email and password.</p>							|
+| Name          | Type   | Description                                         |
+| ------------- | ------ | --------------------------------------------------- |
+| Authorization | String | <p>Basic authorization with email and password.</p> |
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| password			| String			|  <p>User's new password.</p>							|
+| Name     | Type   | Description                 |
+| -------- | ------ | --------------------------- |
+| password | String | <p>User's new password.</p> |
 
 ## Update user
 
-
-
-	PUT /users/:id
-
+    PUT /users/:id
 
 ### Parameters
 
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>User access_token.</p>							|
-| name			| String			| **optional** <p>User's name.</p>							|
-| picture			| String			| **optional** <p>User's picture.</p>							|
-
-
+| Name         | Type   | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| access_token | String | <p>User access_token.</p>           |
+| name         | String | **optional** <p>User's name.</p>    |
+| picture      | String | **optional** <p>User's picture.</p> |

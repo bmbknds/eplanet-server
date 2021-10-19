@@ -71,10 +71,10 @@ const userSchema = new Schema(
         ref: "Student",
       },
     ],
-    coursId: [
+    courseId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Cours",
+        ref: "Course",
       },
     ],
     canLearnTrial: {
@@ -131,7 +131,7 @@ userSchema.methods = {
       "skype",
       "phoneNumber",
       "email",
-      "coursId",
+      "courseId",
       "canLearnTrial",
       "gender",
     ];

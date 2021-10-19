@@ -15,11 +15,11 @@ const orderSchema = new Schema(
       required: true,
       type: Array,
     },
-    coursId: {
+    courseId: {
       type: String,
       required: true,
     },
-    coursDetail: {
+    courseDetail: {
       type: Object,
       required: true,
     },
@@ -72,7 +72,7 @@ orderSchema.methods = {
       studentId: this.studentId,
       teacherId: this.teacherId,
       timeTable: this.timeTable,
-      coursId: this.coursId,
+      courseId: this.courseId,
       records: this.records,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -100,9 +100,9 @@ orderSchema.virtual("teacher", {
   foreignField: "_id",
   justOne: true,
 });
-orderSchema.virtual("cours", {
-  ref: "Cours",
-  localField: "coursId",
+orderSchema.virtual("course", {
+  ref: "Course",
+  localField: "courseId",
   foreignField: "_id",
   justOne: true,
 });

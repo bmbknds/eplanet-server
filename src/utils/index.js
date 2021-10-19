@@ -1,4 +1,4 @@
-import Cours from "../api/cours/model";
+import Course from "../api/course/model";
 import Order from "../api/order/model";
 import Record from "../api/record/model";
 import mongoose, { Schema } from "mongoose";
@@ -6,7 +6,7 @@ const moment = require("moment");
 const objectId = mongoose.Types.ObjectId;
 
 const models = {
-  Cours: Cours,
+  Course: Course,
   Order: Order,
 };
 export const checkInUse = async (
@@ -45,7 +45,7 @@ export const checkInUse = async (
 };
 
 export const generateRecord = async (body = null) => {
-  const { timeTable, coursDetail, teacherId, studentId, coursId, _id } = body;
+  const { timeTable, courseDetail, teacherId, studentId, courseId, _id } = body;
   const orderID = new objectId();
   const startDate = moment(body.startDate).format("DD/MM/YYYY");
   let week = 0;
@@ -61,20 +61,20 @@ export const generateRecord = async (body = null) => {
         .day(element.day + week * 7)
         .unix();
 
-      if (records.length < coursDetail.lessons) {
+      if (records.length < courseDetail.lessons) {
         records.push({
           status: null,
           recordDate,
           timeTable: element,
           teacherId,
           studentId,
-          coursId,
+          courseId,
           orderId: _id,
         });
       }
     }
     week++;
-  } while (records.length < coursDetail.lessons);
+  } while (records.length < courseDetail.lessons);
   return records;
 };
 

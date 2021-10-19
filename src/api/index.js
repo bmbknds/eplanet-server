@@ -3,7 +3,7 @@ import user from "./user";
 import student from "./student";
 import auth from "./auth";
 import passwordReset from "./password-reset";
-import cours from "./cours";
+import course from "./course";
 
 import fileUpload from "./file-upload";
 import order from "./order";
@@ -39,7 +39,7 @@ router.use("/users", user);
 router.use("/students", student);
 router.use("/auth", auth);
 router.use("/password-resets", passwordReset);
-router.use("/cours", cours);
+router.use("/course", course);
 
 router.use("/file-uploads", fileUpload);
 router.use("/orders", order);

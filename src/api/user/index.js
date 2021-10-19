@@ -32,7 +32,7 @@ const {
   phoneNumber,
   studentInfor,
   teacherInfor,
-  coursId,
+  courseId,
   canLearnTrial,
   gender,
 } = schema.tree;
@@ -118,7 +118,7 @@ router.post(
     teacherInfor,
     skype,
     phoneNumber,
-    coursId,
+    courseId,
   }),
   create
 );
@@ -147,7 +147,7 @@ router.put(
     phoneNumber,
     studentInfor,
     teacherInfor,
-    coursId,
+    courseId,
     canLearnTrial,
     gender,
   }),

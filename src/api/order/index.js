@@ -25,8 +25,8 @@ const {
   studentId,
   teacherId,
   timeTable,
-  coursId,
-  coursDetail,
+  courseId,
+  courseDetail,
   records,
   status,
   paid,
@@ -39,7 +39,7 @@ const {
  * @apiParam studentId Order's studentId.
  * @apiParam teacherId Order's teacherId.
  * @apiParam timeTable Order's timeTable.
- * @apiParam coursId Order's coursId.
+ * @apiParam courseId Order's courseId.
  * @apiParam records Order's records.
  * @apiSuccess {Object} order Order's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -51,7 +51,7 @@ router.post(
     studentId,
     teacherId,
     timeTable,
-    coursId,
+    courseId,
     status,
     // records,
     paid,
@@ -107,7 +107,7 @@ router.get(
 );
 router.get(
   "/getTeachersAndSlots",
-  // body({ studentId, teacherId, timeTable, coursId, records }),
+  // body({ studentId, teacherId, timeTable, courseId, records }),
   getTeachersAndSlot
 );
 /**
@@ -127,7 +127,7 @@ router.get("/:id", show);
  * @apiParam studentId Order's studentId.
  * @apiParam teacherId Order's teacherId.
  * @apiParam timeTable Order's timeTable.
- * @apiParam coursId Order's coursId.
+ * @apiParam courseId Order's courseId.
  * @apiParam records Order's records.
  * @apiSuccess {Object} order Order's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -135,7 +135,7 @@ router.get("/:id", show);
  */
 router.put(
   "/:id",
-  // body({ studentId, teacherId, coursId, timeTable,  records, status, paid }),
+  // body({ studentId, teacherId, courseId, timeTable,  records, status, paid }),
   update
 );
 
@@ -155,7 +155,7 @@ router.delete("/:id", destroy);
  * @apiParam studentId Order's studentId.
  * @apiParam teacherId Order's teacherId.
  * @apiParam timeTable Order's timeTable.
- * @apiParam coursId Order's coursId.
+ * @apiParam courseId Order's courseId.
  * @apiParam records Order's records.
  * @apiSuccess {Object} order Order's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -163,7 +163,7 @@ router.delete("/:id", destroy);
  */
 router.post(
   "/getBookedSlot",
-  // body({ studentId, teacherId, timeTable, coursId, records }),
+  // body({ studentId, teacherId, timeTable, courseId, records }),
   getBookedSlot
 );
 
@@ -174,7 +174,7 @@ router.post(
  * @apiParam studentId Order's studentId.
  * @apiParam teacherId Order's teacherId.
  * @apiParam timeTable Order's timeTable.
- * @apiParam coursId Order's coursId.
+ * @apiParam courseId Order's courseId.
  * @apiParam records Order's records.
  * @apiSuccess {Object} order Order's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -182,7 +182,7 @@ router.post(
  */
 router.post(
   "/get-pending-for-admin",
-  // gbody({ studentId, teacherId, timeTable, coursId, records }),
+  // gbody({ studentId, teacherId, timeTable, courseId, records }),
   getPendingForAdmin
 );
 

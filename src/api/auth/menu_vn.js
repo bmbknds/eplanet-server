@@ -53,13 +53,13 @@ const adminMenu = [
     routes: [],
   },
   {
-    path: "/dashboard/cours",
+    path: "/dashboard/course",
     name: "Khoá học",
     icon: "fab fa-leanpub",
     exact: true,
     routes: [
       {
-        path: "/dashboard/cours/edit/:id",
+        path: "/dashboard/course/edit/:id",
         name: "Chi tiết khoá học",
         icon: "fab fa-leanpub",
         exact: true,
@@ -67,7 +67,7 @@ const adminMenu = [
         hideInMenu: true,
       },
       {
-        path: "/dashboard/cours/add",
+        path: "/dashboard/course/add",
         name: "Thêm khoá học",
         icon: "fab fa-leanpub",
         exact: true,
@@ -147,16 +147,16 @@ const adminMenu = [
     exact: true,
     routes: [
       //   {
-      //     path: '/dashboard/cours/edit/:id',
-      //     name: 'Cours detail',
+      //     path: '/dashboard/course/edit/:id',
+      //     name: 'Course detail',
       //     icon: <ReadOutlined />,
       //     exact: true,
       //     routes: [],
       //     hideInMenu: true,
       //   },
       //   {
-      //     path: '/dashboard/cours/add',
-      //     name: 'Add cours',
+      //     path: '/dashboard/course/add',
+      //     name: 'Add course',
       //     icon: <ReadOutlined />,
       //     exact: true,
       //     routes: [],

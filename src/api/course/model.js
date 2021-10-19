@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const coursSchema = new Schema(
+const courseSchema = new Schema(
   {
     name: {
       type: String,
@@ -55,7 +55,7 @@ const coursSchema = new Schema(
   }
 );
 
-coursSchema.methods = {
+courseSchema.methods = {
   view(full) {
     const view = {
       // simple view
@@ -78,7 +78,7 @@ coursSchema.methods = {
   },
 };
 
-const model = mongoose.model("Cours", coursSchema);
+const model = mongoose.model("Course", courseSchema);
 
 export const schema = model.schema;
 export default model;
