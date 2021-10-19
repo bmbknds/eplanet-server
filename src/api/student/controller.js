@@ -93,11 +93,19 @@ export const importStudent = async (item) => {
 
 export const importData = async ({ body }, res, next) => {
   const _data = body.data;
-  for await (const student of _data) {
-    await importStudent(student);
+  try {
+    for await (const student of _data) {
+      await importStudent(student);
+    }
+    return res.status(200).json({
+      status: 1,
+      message: "Success",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 0,
+      err: err,
+      message: "Failed",
+    });
   }
-  return res.status(200).json({
-    status: 1,
-    message: "Success",
-  });
 };
