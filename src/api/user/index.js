@@ -55,6 +55,9 @@ router.get(
       type: String,
       paths: ["role"],
     },
+    courseId: {
+      type: String,
+    },
     name: {
       type: RegExp,
 
