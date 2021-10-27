@@ -30,6 +30,8 @@ const {
   records,
   status,
   paid,
+  learnTrial,
+  inviteCode,
 } = schema.tree;
 
 /**
@@ -54,6 +56,8 @@ router.post(
     courseId,
     status,
     // records,
+    learnTrial,
+    inviteCode,
     paid,
   }),
   create

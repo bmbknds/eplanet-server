@@ -50,31 +50,75 @@ export const generateRecord = async (body = null) => {
   const startDate = moment(body.startDate).format("DD/MM/YYYY");
   let week = 0;
   const records = [];
+  let learnTrial = body.learnTrial;
   do {
     for (let index = 0; index < timeTable.length; index++) {
       const element = timeTable[index];
-      console.log(`${startDate} ${element.slot.startTime}`);
+
       const recordDate = moment(
         `${startDate} ${element.slot.startTime}`,
         "DD/MM/YYYY HH:mm"
-      )
-        .day(element.day + week * 7)
-        .unix();
+      ).day(element.day + week * 7);
 
-      if (records.length < courseDetail.lessons) {
+      if (
+        records.length < courseDetail.lessons &&
+        recordDate >=
+          moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
+      ) {
+        if (!learnTrial) {
+          records.push({
+            status: null,
+            recordDate: recordDate.unix(),
+            timeTable: element,
+            teacherId,
+            studentId,
+            courseId,
+            orderId: _id,
+          });
+        } else {
+          learnTrial = false;
+        }
+      }
+    }
+    week++;
+  } while (records.length < courseDetail.lessons);
+  return records;
+};
+export const generateTrial = async (body = null) => {
+  const { timeTable, courseDetail, teacherId, studentId, courseId, _id } = body;
+  const orderID = new objectId();
+  const startDate = moment(body.startDate).format("DD/MM/YYYY");
+  let week = 0;
+  const records = [];
+  do {
+    for (let index = 0; index < timeTable.length; index++) {
+      const element = timeTable[index];
+
+      const recordDate = moment(
+        `${startDate} ${element.slot.startTime}`,
+        "DD/MM/YYYY HH:mm"
+      ).day(element.day + week * 7);
+      console.log("date", recordDate, startDate);
+
+      if (
+        records.length < 1 &&
+        recordDate >=
+          moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
+      ) {
         records.push({
           status: null,
-          recordDate,
+          recordDate: recordDate.unix(),
           timeTable: element,
           teacherId,
           studentId,
           courseId,
+          kind: "TRIAL",
           orderId: _id,
         });
       }
     }
     week++;
-  } while (records.length < courseDetail.lessons);
+  } while (records.length < 1);
   return records;
 };
 

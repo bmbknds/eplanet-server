@@ -3,7 +3,7 @@ import { Order } from ".";
 import Course from "../course/model";
 import Users from "../user/model";
 import Record from "../record/model";
-import { generateRecord } from "../../utils/index";
+import { generateRecord, generateTrial } from "../../utils/index";
 import lodash from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
@@ -17,9 +17,18 @@ export const create = async ({ body }, res, next) => {
     }
     body.courseDetail = course;
     body._id = new objectId();
+    console.log(body);
 
     return Order.create(body)
-      .then((order) => order.view(true))
+      .then(async (order) => {
+        if (order.learnTrial) {
+          console.log(order);
+          const records = await generateTrial(order);
+          await Record.insertMany(records);
+        }
+
+        return order.view(true);
+      })
       .then(success(res, 201))
       .catch(next);
     // return res.status(500).json(records);

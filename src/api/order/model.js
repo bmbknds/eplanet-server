@@ -41,9 +41,12 @@ const orderSchema = new Schema(
       enum: ["deleted", "pending", "active", "cancel", "done"],
       default: "pending",
     },
-    hasTrial: {
+    learnTrial: {
       type: Boolean,
       default: false,
+    },
+    inviteCode: {
+      type: String,
     },
     paid: {
       type: Boolean,
