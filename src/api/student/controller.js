@@ -55,7 +55,7 @@ const createChild = async (parentId, child) => {
 };
 
 export const importStudent = async (item) => {
-  if (item.parentTel && item.parentEmail) {
+  if (item.parentEmail) {
     //check parent existed
 
     let parent = await checkParentAccountExist(item.parentEmail);
@@ -68,7 +68,10 @@ export const importStudent = async (item) => {
       const parentCreated = await User.create({
         role: "student",
         status: "active",
-        name: item.parentName,
+        name:
+          item.parentName && item?.parentName?.trim() !== ""
+            ? item.parentName
+            : item.studentName,
         email: item.parentEmail,
         password: "123456",
         phoneNumber: item.parentTel,
