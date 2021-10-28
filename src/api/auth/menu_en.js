@@ -14,13 +14,13 @@ const teacherMenu = [
     routes: [],
   },
   {
-    path: "/dashboard/students",
+    path: "/dashboard/student",
     name: "Students",
     icon: "fas fa-user-graduate",
     exact: true,
     routes: [
       {
-        path: "/dashboard/students/detail/:id",
+        path: "/dashboard/student/detail/:id",
         name: "Student detail",
         icon: "fab fa-leanpub",
         exact: true,
@@ -110,13 +110,13 @@ const adminMenu = [
     ],
   },
   {
-    path: "/dashboard/account",
+    path: "/dashboard/accounts",
     name: "Account",
     icon: "fas fa-user-graduate",
     exact: true,
     routes: [
       {
-        path: "/dashboard/account/edit/:id",
+        path: "/dashboard/accounts/edit/:id",
         name: "Account detail",
         icon: "fas fa-user-graduate",
         exact: true,
@@ -124,7 +124,7 @@ const adminMenu = [
         hideInMenu: true,
       },
       {
-        path: "/dashboard/account/add",
+        path: "/dashboard/accounts/add",
         name: "Add account",
         icon: "fas fa-user-graduate",
         exact: true,

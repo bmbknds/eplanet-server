@@ -86,7 +86,7 @@ router.post(
  */
 router.get(
   "/",
-  token({ required: true, roles: ["admin", "super-admin"] }),
+  token({ required: true, roles: ["admin", "super-admin", "teacher"] }),
   query({
     name: {
       type: RegExp,

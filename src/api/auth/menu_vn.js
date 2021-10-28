@@ -14,11 +14,20 @@ const teacherMenu = [
     routes: [],
   },
   {
-    path: "/dashboard/students",
+    path: "/dashboard/student",
     name: "Học sinh",
     icon: "fas fa-user-graduate",
     exact: true,
-    routes: [],
+    routes: [
+      {
+        path: "/dashboard/student/detail/:id",
+        name: "Thông tin học sinh",
+        icon: "fab fa-leanpub",
+        exact: true,
+        routes: [],
+        hideInMenu: true,
+      },
+    ],
   },
 ];
 const studentMenu = [
@@ -101,13 +110,13 @@ const adminMenu = [
     ],
   },
   {
-    path: "/dashboard/account",
+    path: "/dashboard/accounts",
     name: "Tài khoản",
     icon: "fas fa-user-graduate",
     exact: true,
     routes: [
       {
-        path: "/dashboard/account/edit/:id",
+        path: "/dashboard/accounts/edit/:id",
         name: "Chi tiết tài khoản",
         icon: "fas fa-user-graduate",
         exact: true,
@@ -115,7 +124,7 @@ const adminMenu = [
         hideInMenu: true,
       },
       {
-        path: "/dashboard/account/add",
+        path: "/dashboard/accounts/add",
         name: "Thêm tài khoản",
         icon: "fas fa-user-graduate",
         exact: true,
