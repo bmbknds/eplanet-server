@@ -8,10 +8,13 @@ var path = require("path");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(
-      null,
-      path.join(__dirname, `assets/images`).replace("src/api/file-upload", "")
-    );
+    var dir = path
+      .join(__dirname, `assets/images`)
+      .replace("src/api/file-upload", "");
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
   },
   filename: function (req, file, cb) {
     // console.log(req.params);
