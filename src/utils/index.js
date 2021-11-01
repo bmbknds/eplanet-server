@@ -94,7 +94,15 @@ export const generateRecord = async (body = null) => {
   return records;
 };
 export const generateTrial = async (body = null) => {
-  const { timeTable, courseDetail, teacherId, studentId, courseId, _id } = body;
+  const {
+    timeTable,
+    courseDetail,
+    teacherId,
+    studentId,
+    courseId,
+    _id,
+    parentId,
+  } = body;
   const orderID = new objectId();
   const startDate = moment(body.startDate).format("DD/MM/YYYY");
   let week = 0;
@@ -120,6 +128,7 @@ export const generateTrial = async (body = null) => {
           timeTable: element,
           teacherId,
           studentId,
+          parentId,
           courseId,
           kind: "TRIAL",
           orderId: _id,

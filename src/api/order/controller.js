@@ -74,11 +74,12 @@ export const getListStudent = (
       $addFields: {
         objectIdStudent: { $toObjectId: "$studentId" },
         objectIdTeacher: { $toObjectId: "$teacherId" },
+        objectIdParent: { $toObjectId: "$parentId" },
       },
     },
     {
       $lookup: {
-        from: "users",
+        from: "students",
         localField: "objectIdStudent",
         foreignField: "_id",
         as: "studentDetail",
@@ -90,7 +91,7 @@ export const getListStudent = (
     },
     {
       $addFields: {
-        studentName: "$studentDetail.name",
+        studentName: "$studentDetail.studentName",
       },
     },
     {
@@ -101,14 +102,23 @@ export const getListStudent = (
         as: "teacherDetail",
       },
     },
+    {
+      $lookup: {
+        from: "users",
+        localField: "objectIdParent",
+        foreignField: "_id",
+        as: "parentDetail",
+      },
+    },
 
     {
       $project: {
         objectIdStudent: 0,
+        objectIdParent: 0,
       },
     },
   ];
-
+  // Tìm theo tên
   if (query.studentName) {
     aggregateQuery.push({
       $match: {
@@ -119,11 +129,13 @@ export const getListStudent = (
       },
     });
   }
+  // Lấy danh sách record
   aggregateQuery.push({
     $addFields: {
       stringIdOrder: { $toString: "$_id" },
     },
   });
+
   aggregateQuery.push({
     $lookup: {
       from: "records",
@@ -132,6 +144,64 @@ export const getListStudent = (
       as: "records",
     },
   });
+  // Số buổi đã học
+  aggregateQuery.push({
+    $addFields: {
+      learnedRecord: {
+        $size: {
+          $filter: {
+            input: "$records",
+            as: "records_field",
+            cond: {
+              $or: [
+                { $eq: ["$$records_field.status", 1] },
+                { $eq: ["$$records_field.status", 5] },
+              ],
+            },
+          },
+        },
+      },
+    },
+  });
+  // Số buổi còn lại
+  aggregateQuery.push({
+    $addFields: {
+      remainingRecord: {
+        $size: {
+          $filter: {
+            input: "$records",
+            as: "records_field",
+            cond: {
+              $eq: ["$$records_field.status", null],
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (query.remainingRecord) {
+    aggregateQuery.push({ $sort: { remainingRecord: 1 } });
+  }
+  aggregateQuery.push({
+    $project: {
+      _id: 1,
+      startDate: 1,
+      status: 1,
+      finalReport: 1,
+      studentId: 1,
+      parentId: 1,
+      teacherId: 1,
+      courseId: 1,
+      courseName: "$courseDetail.name",
+      studentName: 1,
+      phoneNumber: { $first: "$parentDetail.phoneNumber" },
+      teacherName: { $first: "$teacherDetail.name" },
+      learnedRecord: 1,
+      remainingRecord: 1,
+    },
+  });
+
   return Order.aggregate(aggregateQuery)
     .then((orders) => res.status(200).json(orders))
     .catch((err) => {
@@ -148,12 +218,18 @@ export const show = ({ params }, res, next) =>
     .catch(next);
 
 export const update = ({ body, params }, res, next) => {
+  console.log(body);
+  // return null;
   return Order.findById(params.id)
     .populate({ path: "course" })
     .then(notFound(res))
     .then(async (order) => {
       if (body.status === "active") {
+        if (body.startDate) {
+          order.startDate = body.startDate;
+        }
         const records = await generateRecord(order);
+
         return Record.insertMany(records).then(() => {
           order.status = body.status;
           order.paid = body.paid;
@@ -167,7 +243,6 @@ export const update = ({ body, params }, res, next) => {
     .then((order) => (order ? order.view(true) : null))
     .then(success(res))
     .catch(next);
-  // (order ? Object.assign(order, body).save() : null))
 };
 
 export const destroy = ({ params }, res, next) =>
@@ -260,7 +335,7 @@ export const getPendingForAdmin = (req, res, next) => {
   const { filter } = req.body;
   return Order.find(filter)
     .populate([
-      { path: "student", select: "name phoneNumber" },
+      { path: "student", select: "studentName phoneNumber" },
       { path: "teacher", select: "name" },
       { path: "course" },
     ])

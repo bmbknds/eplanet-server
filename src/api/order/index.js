@@ -108,6 +108,9 @@ router.get(
     status: {
       type: String,
     },
+    remainingRecord: {
+      type: Number,
+    },
   }),
   getListStudent
 );
