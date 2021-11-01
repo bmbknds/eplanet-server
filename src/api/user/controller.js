@@ -13,6 +13,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) => {
 
   // console.log(query);
   return User.find(query, select, cursor)
+
     .then((users) => users.map((user) => user.view()))
     .then(success(res))
     .catch(next);
