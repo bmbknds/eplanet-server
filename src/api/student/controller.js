@@ -8,12 +8,14 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .then(success(res, 201))
     .catch(next);
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Student.find(query, select, cursor)
+export const index = ({ querymen: { query, select, cursor } }, res, next) => {
+  console.log(select);
+  return Student.find(query, select)
     .populate({ path: "parentId", select: "name phoneNumber" })
     .then((students) => students.map((student) => student.view()))
     .then(success(res))
     .catch(next);
+};
 
 export const show = ({ params }, res, next) =>
   Student.findById(params.id)
@@ -40,7 +42,10 @@ export const destroy = ({ params }, res, next) =>
 
 const checkParentAccountExist = async (email) => {
   const user = await User.findOne({ email });
-  console.log(email, "-----", user);
+  if (user) {
+    console.log(email, "-----", user);
+  }
+
   return user;
 };
 
@@ -59,7 +64,7 @@ export const importStudent = async (item) => {
     //check parent existed
 
     let parent = await checkParentAccountExist(item.parentEmail);
-    console.log("email", item.parentEmail, parent);
+
     let parentId = null;
     if (parent) {
       parentId = parent._id;
