@@ -199,6 +199,7 @@ export const getListStudent = (
       teacherName: { $first: "$teacherDetail.name" },
       learnedRecord: 1,
       remainingRecord: 1,
+      endDate: { $max: "$records.recordDate" },
     },
   });
 
