@@ -1,6 +1,7 @@
 import { success, notFound } from "../../services/response/";
 import { Record } from ".";
 import { User } from "../user";
+import { Student } from "../student";
 import { pickBy, identity } from "lodash";
 import moment from "moment";
 import { CLASS_STATUS } from "../constants/index";
@@ -11,11 +12,12 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .then(success(res, 201))
     .catch(next);
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Record.count(query)
+export const index = ({ querymen: { query, select, cursor } }, res, next) => {
+  console.log("query", query, cursor);
+  return Record.count(query)
     .then((count) =>
       Record.find(query, select, cursor)
-        .populate({ path: "student", select: "name" })
+        .populate({ path: "student" })
         .then((records) => ({
           count,
           rows: records.map((record) => record.view()),
@@ -23,6 +25,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     )
     .then(success(res))
     .catch(next);
+};
 
 export const show = ({ params }, res, next) =>
   Record.findById(params.id)
@@ -95,11 +98,11 @@ export const report = async (
   res,
   next
 ) => {
-  const students = await User.find(
+  const students = await Student.find(
     {
-      name: { $regex: new RegExp(query.studentName, "i") },
-      status: "active",
-      role: "student",
+      studentName: { $regex: new RegExp(query.studentName, "i") },
+      // status: "active",
+      // role: "student",
     },
     { _id: 1 }
   );
@@ -109,7 +112,7 @@ export const report = async (
   return Record.count(query)
     .then((count) =>
       Record.find(query, select, cursor)
-        .populate({ path: "student", select: "name" })
+        .populate({ path: "student" })
         .then((records) => ({
           count,
           rows: records.map((record) => record.view()),

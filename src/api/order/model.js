@@ -7,6 +7,10 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
+    parentId: {
+      type: String,
+      required: true,
+    },
     teacherId: {
       type: String,
       required: true,
@@ -73,6 +77,7 @@ orderSchema.methods = {
       // simple view
       _id: this.id,
       studentId: this.studentId,
+      parentId: this.parentId,
       teacherId: this.teacherId,
       timeTable: this.timeTable,
       courseId: this.courseId,
@@ -91,8 +96,14 @@ orderSchema.methods = {
   },
 };
 orderSchema.set("collection", "orders");
-orderSchema.virtual("student", {
+orderSchema.virtual("parent", {
   ref: "User",
+  localField: "parentId",
+  foreignField: "_id",
+  justOne: true,
+});
+orderSchema.virtual("student", {
+  ref: "Student",
   localField: "studentId",
   foreignField: "_id",
   justOne: true,

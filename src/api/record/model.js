@@ -38,6 +38,10 @@ const recordSchema = new Schema(
       type: String,
       required: true,
     },
+    parentId: {
+      type: String,
+      required: true,
+    },
     courseId: {
       type: String,
       required: true,
@@ -86,7 +90,7 @@ recordSchema.methods = {
   },
 };
 recordSchema.virtual("student", {
-  ref: "User",
+  ref: "Student",
   localField: "studentId",
   foreignField: "_id",
   justOne: true,
