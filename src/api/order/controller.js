@@ -17,7 +17,7 @@ export const create = async ({ body }, res, next) => {
     }
     body.courseDetail = course;
     body._id = new objectId();
-    console.log(body);
+    // console.log(body);
     const checkSlotsResult = await checkDuplicateTimeTable(body);
 
     if (checkSlotsResult.length === 0) {
@@ -38,7 +38,7 @@ export const create = async ({ body }, res, next) => {
     } else {
       res.status(409).end();
     }
-    console.log(checkSlotsResult, "slot result");
+    // console.log(checkSlotsResult, "slot result");
   } catch (err) {
     next(err);
   }
@@ -62,6 +62,9 @@ export const getListStudent = (
   }
   if (user.role === "student") {
     matchQuery.studentId = user._id.toString();
+  }
+  if (query.studentId) {
+    matchQuery.studentId = query.studentId;
   }
   if (query._id) {
     matchQuery._id = mongoose.Types.ObjectId(query._id);
@@ -190,6 +193,7 @@ export const getListStudent = (
   if (query.remainingRecord) {
     aggregateQuery.push({ $sort: { remainingRecord: 1 } });
   }
+
   aggregateQuery.push({
     $project: {
       _id: 1,
@@ -207,6 +211,7 @@ export const getListStudent = (
       learnedRecord: 1,
       remainingRecord: 1,
       endDate: { $max: "$records.recordDate" },
+      records: select?.record === 1 ? "$records" : "null",
     },
   });
 
