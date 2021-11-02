@@ -19,22 +19,21 @@ export const create = async ({ body }, res, next) => {
     body._id = new objectId();
     // console.log(body);
     const checkSlotsResult = await checkDuplicateTimeTable(body);
-
+    console.log(checkSlotsResult);
     if (checkSlotsResult.length === 0) {
-      res.status(409).end();
+      // res.status(409).end();
 
-      // return Order.create(body)
-      //   .then(async (order) => {
-      //     if (order.learnTrial) {
-      //       console.log(order);
-      //       const records = await generateTrial(order);
-      //       await Record.insertMany(records);
-      //     }
-
-      //     return order.view(true);
-      //   })
-      //   .then(success(res, 201))
-      //   .catch(next);
+      return Order.create(body)
+        .then(async (order) => {
+          if (order.learnTrial) {
+            console.log(order);
+            const records = await generateTrial(order);
+            await Record.insertMany(records);
+          }
+          return order.view(true);
+        })
+        .then(success(res, 201))
+        .catch(next);
     } else {
       res.status(409).end();
     }
@@ -364,9 +363,6 @@ export const checkDuplicateTimeTable = async (body) => {
     lodash.flatten(orders.map((item) => item.timeTable)),
     (e) => JSON.stringify(e)
   );
-
-  console.log("unavailableSlots", unavailableSlots);
-  console.log("order", timeTable);
-
+  console.log(unavailableSlots, "compare", timeTable);
   return lodash.intersectionWith(unavailableSlots, timeTable, lodash.isEqual);
 };
