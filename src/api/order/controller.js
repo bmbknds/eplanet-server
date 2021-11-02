@@ -4,7 +4,7 @@ import Course from "../course/model";
 import Users from "../user/model";
 import Record from "../record/model";
 import { generateRecord, generateTrial } from "../../utils/index";
-import lodash from "lodash";
+import lodash, { join } from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
 const objectId = mongoose.Types.ObjectId;
@@ -18,20 +18,27 @@ export const create = async ({ body }, res, next) => {
     body.courseDetail = course;
     body._id = new objectId();
     console.log(body);
+    const checkSlotsResult = await checkDuplicateTimeTable(body);
 
-    return Order.create(body)
-      .then(async (order) => {
-        if (order.learnTrial) {
-          console.log(order);
-          const records = await generateTrial(order);
-          await Record.insertMany(records);
-        }
+    if (checkSlotsResult.length === 0) {
+      res.status(409).end();
 
-        return order.view(true);
-      })
-      .then(success(res, 201))
-      .catch(next);
-    // return res.status(500).json(records);
+      // return Order.create(body)
+      //   .then(async (order) => {
+      //     if (order.learnTrial) {
+      //       console.log(order);
+      //       const records = await generateTrial(order);
+      //       await Record.insertMany(records);
+      //     }
+
+      //     return order.view(true);
+      //   })
+      //   .then(success(res, 201))
+      //   .catch(next);
+    } else {
+      res.status(409).end();
+    }
+    console.log(checkSlotsResult, "slot result");
   } catch (err) {
     next(err);
   }
@@ -343,4 +350,18 @@ export const getPendingForAdmin = (req, res, next) => {
 
     .then(success(res))
     .catch(next);
+};
+
+export const checkDuplicateTimeTable = async (body) => {
+  const { teacherId, timeTable } = body;
+  const orders = await Order.find({ teacherId }, { timeTable: 1 });
+  const unavailableSlots = lodash.uniqBy(
+    lodash.flatten(orders.map((item) => item.timeTable)),
+    (e) => JSON.stringify(e)
+  );
+
+  console.log("unavailableSlots", unavailableSlots);
+  console.log("order", timeTable);
+
+  return lodash.intersectionWith(unavailableSlots, timeTable, lodash.isEqual);
 };

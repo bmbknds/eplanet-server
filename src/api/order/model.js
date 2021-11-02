@@ -59,6 +59,10 @@ const orderSchema = new Schema(
     finalReport: {
       type: Array,
     },
+    originOrderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
   },
   {
     timestamps: true,
