@@ -38,13 +38,13 @@ const studentMenu = [
     exact: true,
     routes: [],
   },
-  {
-    path: "/dashboard/account",
-    name: "Account",
-    icon: "far fa-user-circle",
-    exact: true,
-    routes: [],
-  },
+  // {
+  //   path: "/dashboard/account",
+  //   name: "Account",
+  //   icon: "far fa-user-circle",
+  //   exact: true,
+  //   routes: [],
+  // },
   {
     path: "/dashboard/feedback-history",
     name: "Feedback history",

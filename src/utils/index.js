@@ -53,12 +53,14 @@ export const generateRecord = async (body = null) => {
     parentId,
     courseId,
     _id,
+    id,
   } = body;
   const orderID = new objectId();
   const startDate = moment(body.startDate).format("DD/MM/YYYY");
   let week = 0;
   const records = [];
   let learnTrial = body.learnTrial;
+
   do {
     for (let index = 0; index < timeTable.length; index++) {
       const element = timeTable[index];
@@ -82,7 +84,7 @@ export const generateRecord = async (body = null) => {
             studentId,
             parentId,
             courseId,
-            orderId: _id,
+            orderId: _id || id,
           });
         } else {
           learnTrial = false;

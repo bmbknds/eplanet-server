@@ -11,6 +11,7 @@ import {
   getPendingForAdmin,
   getListStudent,
   getTeachersAndSlot,
+  extend,
 } from "./controller";
 import { schema } from "./model";
 export Order, { schema } from "./model";
@@ -63,6 +64,33 @@ router.post(
     paid,
   }),
   create
+);
+
+/**
+ * @api {post} /orders Create order
+ * @apiName CreateOrder
+ * @apiGroup Order
+ * @apiParam studentId Order's studentId.
+ * @apiParam teacherId Order's teacherId.
+ * @apiParam timeTable Order's timeTable.
+ * @apiParam courseId Order's courseId.
+ * @apiParam records Order's records.
+ * @apiSuccess {Object} order Order's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 Order not found.
+ */
+router.post(
+  "/extend",
+  token({
+    required: true,
+    roles: ["admin", "super-admin"],
+  }),
+  body({
+    orderId: {
+      type: String,
+    },
+  }),
+  extend
 );
 
 /**
@@ -119,6 +147,7 @@ router.get(
 );
 router.get(
   "/getTeachersAndSlots",
+
   // body({ studentId, teacherId, timeTable, courseId, records }),
   getTeachersAndSlot
 );
@@ -147,6 +176,10 @@ router.get("/:id", show);
  */
 router.put(
   "/:id",
+  token({
+    required: true,
+    roles: ["admin", "super-admin"],
+  }),
   // body({ studentId, teacherId, courseId, timeTable,  records, status, paid }),
   update
 );

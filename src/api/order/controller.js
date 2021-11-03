@@ -4,7 +4,7 @@ import Course from "../course/model";
 import Users from "../user/model";
 import Record from "../record/model";
 import { generateRecord, generateTrial } from "../../utils/index";
-import lodash, { join } from "lodash";
+import lodash, { join, last } from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
 const objectId = mongoose.Types.ObjectId;
@@ -15,7 +15,8 @@ export const create = async ({ body }, res, next) => {
     if (!course) {
       return res.status(400).json({ message: "This course is not available." });
     }
-    body.courseDetail = course;
+    const { price, lessons, name, title, _id } = course;
+    body.courseDetail = { price, lessons, name, title, _id };
     body._id = new objectId();
     // console.log(body);
     const checkSlotsResult = await checkDuplicateTimeTable(body);
@@ -38,6 +39,34 @@ export const create = async ({ body }, res, next) => {
       res.status(409).end();
     }
     // console.log(checkSlotsResult, "slot result");
+  } catch (err) {
+    next(err);
+  }
+};
+export const extend = async ({ body, user }, res, next) => {
+  try {
+    const { orderId } = body;
+
+    Order.findById(orderId)
+      .then(notFound(res))
+      .then(async (order) => {
+        const lastRecord = await Record.findOne({
+          orderId: order._id,
+        }).sort({ recordDate: -1 });
+
+        order.logs.push({
+          action: "charge",
+          date: moment(),
+          userId: user._id,
+        });
+        const records = await generateRecord({
+          ...order.toJSON(),
+          startDate: moment.unix(lastRecord.recordDate).toISOString(),
+        });
+        await Record.insertMany(records);
+        return order.save();
+      })
+      .then(success(res));
   } catch (err) {
     next(err);
   }
@@ -229,7 +258,7 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next);
 
-export const update = ({ body, params }, res, next) => {
+export const update = ({ body, params, user }, res, next) => {
   console.log(body);
   // return null;
   return Order.findById(params.id)
@@ -239,6 +268,11 @@ export const update = ({ body, params }, res, next) => {
       if (body.status === "active") {
         if (body.startDate) {
           order.startDate = body.startDate;
+          order.logs.push({
+            action: "charge",
+            date: moment(),
+            userId: user._id,
+          });
         }
         const records = await generateRecord(order);
 

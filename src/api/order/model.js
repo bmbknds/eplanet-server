@@ -25,7 +25,6 @@ const orderSchema = new Schema(
     },
     courseDetail: {
       type: Object,
-      required: true,
     },
     // price: {
     //   type: Number,
@@ -33,13 +32,27 @@ const orderSchema = new Schema(
     // },
     startDate: {
       type: Date,
-      default: new Date(),
+
       required: true,
     },
-
-    records: {
-      type: Array,
+    closeDate: {
+      type: Date,
+      default: null,
     },
+
+    logs: [
+      {
+        action: { type: String, enum: ["charge", "close"], require: true },
+        date: {
+          type: Date,
+          require: true,
+        },
+        userId: {
+          type: String,
+          require: true,
+        },
+      },
+    ],
     status: {
       type: String,
       enum: ["deleted", "pending", "active", "cancel", "done"],
@@ -59,6 +72,7 @@ const orderSchema = new Schema(
     finalReport: {
       type: Array,
     },
+
     originOrderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
