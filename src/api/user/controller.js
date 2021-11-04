@@ -112,6 +112,7 @@ export const update = ({ bodymen: { body }, params, user }, res, next) =>
       //     lodash.keys(pickBy(body, identity)) // ["104", "102"]
       //   )
       // );
+      console.log(user);
       return user ? Object.assign(user, pickBy(body, identity)).save() : null;
     })
     .then((user) => (user ? user.view(true) : null))

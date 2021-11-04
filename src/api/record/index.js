@@ -22,13 +22,8 @@ import {
 export Record, { schema } from "./model";
 
 const router = new Router();
-const {
-  status,
-  studentComment,
-  teacherComment,
-  teacherId,
-  studentId,
-} = schema.tree;
+const { status, studentComment, teacherComment, teacherId, studentId } =
+  schema.tree;
 
 /**
  * @api {post} /records Create record
@@ -41,7 +36,15 @@ const {
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Record not found.
  */
-router.post("/", body({ status, studentComment, teacherComment }), create);
+router.post(
+  "/",
+  token({
+    required: true,
+    roles: ["admin", "super-admin", "teacher"],
+  }),
+  body({ status, studentComment, teacherComment }),
+  create
+);
 
 /**
  * @api {get} /records Retrieve records

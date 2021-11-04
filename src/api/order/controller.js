@@ -233,6 +233,11 @@ export const getListStudent = (
       teacherId: 1,
       courseId: 1,
       courseName: "$courseDetail.name",
+
+      nickName: "$studentName",
+      age: "$studentDetail.age",
+      skype: "$studentDetail.skype",
+      parentName: { $first: "$parentDetail.name" },
       studentName: 1,
       phoneNumber: { $first: "$parentDetail.phoneNumber" },
       teacherName: { $first: "$teacherDetail.name" },
