@@ -55,7 +55,7 @@ const orderSchema = new Schema(
     ],
     status: {
       type: String,
-      enum: ["deleted", "pending", "active", "cancel", "done"],
+      enum: ["deleted", "pending", "active", "cancel", "done", "closed"],
       default: "pending",
     },
     learnTrial: {

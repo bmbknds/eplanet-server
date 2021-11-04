@@ -259,8 +259,6 @@ export const show = ({ params }, res, next) =>
     .catch(next);
 
 export const update = ({ body, params, user }, res, next) => {
-  console.log(body);
-  // return null;
   return Order.findById(params.id)
     .populate({ path: "course" })
     .then(notFound(res))

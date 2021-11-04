@@ -40,13 +40,27 @@ export const destroy = ({ params }, res, next) =>
     .then(success(res, 204))
     .catch(next);
 
-const checkParentAccountExist = async (email) => {
-  const user = await User.findOne({ email });
-  if (user) {
-    console.log(email, "-----", user);
+const checkParentAccountExist = async (item) => {
+  let userWithMail = null;
+  let userWithPhone = null;
+  if (item.parentEmail) {
+    userWithMail = await User.findOne({
+      email: item.parentEmail,
+    });
+  }
+  if (item.parentTel) {
+    userWithPhone = await User.findOne({
+      phoneNumber: item.parentTel,
+    });
   }
 
-  return user;
+  if (userWithMail) {
+    return userWithMail;
+  }
+  if (userWithPhone) {
+    return userWithPhone;
+  }
+  return null;
 };
 
 const createChild = async (parentId, child) => {
@@ -60,10 +74,10 @@ const createChild = async (parentId, child) => {
 };
 
 export const importStudent = async (item) => {
-  if (item.parentEmail) {
+  if (item.parentEmail || item.phoneNumber) {
     //check parent existed
 
-    let parent = await checkParentAccountExist(item.parentEmail);
+    let parent = await checkParentAccountExist(item);
 
     let parentId = null;
     if (parent) {
@@ -110,6 +124,7 @@ export const importData = async ({ body }, res, next) => {
       message: "Success",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       status: 0,
       err: err,
