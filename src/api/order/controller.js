@@ -233,7 +233,6 @@ export const getListStudent = (
       teacherId: 1,
       courseId: 1,
       courseName: "$courseDetail.name",
-
       nickName: "$studentName",
       age: "$studentDetail.age",
       skype: "$studentDetail.skype",

@@ -22,7 +22,7 @@ import {
 export Record, { schema } from "./model";
 
 const router = new Router();
-const { status, studentComment, teacherComment, teacherId, studentId } =
+const { status, studentComment, teacherComment, teacherId, studentId, kind } =
   schema.tree;
 
 /**
@@ -43,6 +43,37 @@ router.post(
     roles: ["admin", "super-admin", "teacher"],
   }),
   body({ status, studentComment, teacherComment }),
+  create
+);
+
+/**
+ * @api {post} /records Create record
+ * @apiName CreateRecord
+ * @apiGroup Record
+ * @apiParam status Record's status.
+ * @apiParam studentComment Record's studentComment.
+ * @apiParam teacherComment Record's teacherComment.
+ * @apiSuccess {Object} record Record's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 Record not found.
+ */
+router.post(
+  "/increase",
+  token({
+    required: true,
+    roles: ["admin", "super-admin", "teacher"],
+  }),
+  body({
+    quantity: {
+      type: Number,
+      require: true,
+    },
+    orderId: {
+      type: String,
+      require: true,
+    },
+    kind,
+  }),
   create
 );
 

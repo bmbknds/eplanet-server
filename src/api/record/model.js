@@ -23,7 +23,7 @@ const recordSchema = new Schema(
     },
     kind: {
       type: String,
-      enum: ["TRIAL", "PERIODIC", "TEMP"], // Học thử, học định kỳ, học tạm thời / bù
+      enum: ["TRIAL", "PERIODIC", "TEMP", "BONUS"], // Học thử, học định kỳ, học tạm thời / bù
       default: "PERIODIC",
     },
     studentComment: {

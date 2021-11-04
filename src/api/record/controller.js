@@ -12,6 +12,15 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .then(success(res, 201))
     .catch(next);
 
+export const increase = ({ bodymen: { body } }, res, next) => {
+  console.log(body);
+  // Record.create(body)
+  //   .then((record) => record.view(true))
+  //   .then(success(res, 201))
+  //   .catch(next);
+  res.status(200).end();
+};
+
 export const index = ({ querymen: { query, select, cursor } }, res, next) => {
   console.log("query", query, cursor);
   return Record.count(query)
