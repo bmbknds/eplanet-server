@@ -45,7 +45,7 @@ const config = {
       // user: "system",
       // password: "Bmbknds13!@#",
       options: {
-        debug: true,
+        // debug: true,
       },
     },
   },

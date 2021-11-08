@@ -11,6 +11,7 @@ import {
   takeLeave,
   submitReport,
   getTakeLeaveRecords,
+  increase,
 } from "./controller";
 import { schema } from "./model";
 import {
@@ -74,7 +75,7 @@ router.post(
     },
     kind,
   }),
-  create
+  increase
 );
 
 /**

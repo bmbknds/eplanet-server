@@ -35,6 +35,9 @@ const orderSchema = new Schema(
 
       required: true,
     },
+    completedRecord: {
+      type: Number,
+    },
     closeDate: {
       type: Date,
       default: null,
@@ -103,6 +106,7 @@ orderSchema.methods = {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       finalReport: this.finalReport,
+      student: this.student,
     };
 
     return full

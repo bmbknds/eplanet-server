@@ -54,6 +54,7 @@ export const generateRecord = async (body = null) => {
     courseId,
     _id,
     id,
+    completedRecord,
   } = body;
   const orderID = new objectId();
   const startDate = moment(body.startDate).format("DD/MM/YYYY");
@@ -77,7 +78,9 @@ export const generateRecord = async (body = null) => {
       ) {
         if (!learnTrial) {
           records.push({
-            status: null,
+            status:
+              completedRecord && completedRecord >= records.length ? -1 : null,
+
             recordDate: recordDate.unix(),
             timeTable: element,
             teacherId,
@@ -93,6 +96,59 @@ export const generateRecord = async (body = null) => {
     }
     week++;
   } while (records.length < courseDetail.lessons);
+  return records;
+};
+export const generateRecordWithNumber = async (
+  body,
+  quantity = null,
+  unixStartDate = null
+) => {
+  if (!unixStartDate || quantity) {
+    return null;
+  }
+  const {
+    timeTable,
+    courseDetail,
+    teacherId,
+    studentId,
+    parentId,
+    courseId,
+    _id,
+    id,
+  } = body;
+  const orderID = new objectId();
+  const startDate = moment.unix(unixStartDate).format("DD/MM/YYYY");
+  let week = 0;
+  const records = [];
+
+  do {
+    for (let index = 0; index < timeTable.length; index++) {
+      const element = timeTable[index];
+
+      const recordDate = moment(
+        `${startDate} ${element.slot.startTime}`,
+        "DD/MM/YYYY HH:mm"
+      ).day(element.day + week * 7);
+
+      if (
+        records.length < quantity &&
+        recordDate >=
+          moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
+      ) {
+        records.push({
+          status: null,
+          recordDate: recordDate.unix(),
+          timeTable: element,
+          teacherId,
+          studentId,
+          parentId,
+          courseId,
+          orderId: _id || id,
+        });
+      }
+    }
+    week++;
+  } while (records.length < quantity);
   return records;
 };
 export const generateTrial = async (body = null) => {

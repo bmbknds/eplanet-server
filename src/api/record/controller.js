@@ -2,6 +2,7 @@ import { success, notFound } from "../../services/response/";
 import { Record } from ".";
 import { User } from "../user";
 import { Student } from "../student";
+import { Order } from "../order";
 import { pickBy, identity } from "lodash";
 import moment from "moment";
 import { CLASS_STATUS } from "../constants/index";
@@ -12,8 +13,18 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .then(success(res, 201))
     .catch(next);
 
-export const increase = ({ bodymen: { body } }, res, next) => {
+export const increase = async ({ bodymen: { body } }, res, next) => {
+  const { quantity, orderId, kind } = body;
   console.log(body);
+  const order = await Order.findById(orderId).lean().then(notFound(res));
+
+  const latestRecord = await Record.find({ orderId })
+    .sort({ recordDate: -1 })
+    .limit(1)
+    .then(notFound(res));
+  console.log(latestRecord);
+  console.log(order);
+
   // Record.create(body)
   //   .then((record) => record.view(true))
   //   .then(success(res, 201))

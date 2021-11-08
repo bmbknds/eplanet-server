@@ -3,7 +3,11 @@ import { Order } from ".";
 import Course from "../course/model";
 import Users from "../user/model";
 import Record from "../record/model";
-import { generateRecord, generateTrial } from "../../utils/index";
+import {
+  generateRecord,
+  generateRecordWithNumber,
+  generateTrial,
+} from "../../utils/index";
 import lodash, { join, last } from "lodash";
 import mongoose, { Schema } from "mongoose";
 const moment = require("moment");
@@ -18,16 +22,12 @@ export const create = async ({ body }, res, next) => {
     const { price, lessons, name, title, _id } = course;
     body.courseDetail = { price, lessons, name, title, _id };
     body._id = new objectId();
-    // console.log(body);
     const checkSlotsResult = await checkDuplicateTimeTable(body);
-    console.log(checkSlotsResult);
-    if (checkSlotsResult.length === 0) {
-      // res.status(409).end();
 
+    if (checkSlotsResult.length === 0) {
       return Order.create(body)
         .then(async (order) => {
           if (order.learnTrial) {
-            console.log(order);
             const records = await generateTrial(order);
             await Record.insertMany(records);
           }
@@ -38,7 +38,35 @@ export const create = async ({ body }, res, next) => {
     } else {
       res.status(409).end();
     }
-    // console.log(checkSlotsResult, "slot result");
+  } catch (err) {
+    next(err);
+  }
+};
+export const mapping = async ({ body }, res, next) => {
+  try {
+    const course = await Course.findById(body.courseId);
+    if (!course) {
+      return res.status(400).json({ message: "This course is not available." });
+    }
+    const { price, lessons, name, title, _id } = course;
+    body.courseDetail = { price, lessons, name, title, _id };
+    body._id = new objectId();
+    const checkSlotsResult = await checkDuplicateTimeTable(body);
+
+    // await Record.insertMany(records);
+    if (checkSlotsResult.length === 0) {
+      return Order.create(body)
+        .then(async (order) => {
+          const records = await generateRecord(body);
+          await Record.insertMany(records);
+          console.log(records);
+          return order.view(true);
+        })
+        .then(success(res, 201))
+        .catch(next);
+    } else {
+      res.status(409).end();
+    }
   } catch (err) {
     next(err);
   }
@@ -75,7 +103,8 @@ export const extend = async ({ body, user }, res, next) => {
 export const index = (req, res, next) => {
   const { filter } = req.body;
   return Order.find(filter)
-    .then((orders) => orders.map((order) => order.view()))
+    .populate([{ path: "student", select: "studentName phoneNumber" }])
+    .then((orders) => orders.map((order) => order.view(true)))
     .then(success(res))
     .catch(next);
 };
@@ -395,6 +424,7 @@ export const getPendingForAdmin = (req, res, next) => {
 export const checkDuplicateTimeTable = async (body) => {
   const { teacherId, timeTable } = body;
   const orders = await Order.find({ teacherId }, { timeTable: 1 });
+
   const unavailableSlots = lodash.uniqBy(
     lodash.flatten(orders.map((item) => item.timeTable)),
     (e) => JSON.stringify(e)

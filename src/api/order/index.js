@@ -12,6 +12,7 @@ import {
   getListStudent,
   getTeachersAndSlot,
   extend,
+  mapping,
 } from "./controller";
 import { schema } from "./model";
 export Order, { schema } from "./model";
@@ -34,6 +35,7 @@ const {
   paid,
   learnTrial,
   inviteCode,
+  completedRecord,
 } = schema.tree;
 
 /**
@@ -64,6 +66,23 @@ router.post(
     paid,
   }),
   create
+);
+router.post(
+  "/mapping",
+  body({
+    studentId,
+    teacherId,
+    timeTable,
+    courseId,
+    status,
+    parentId,
+    // records,
+    completedRecord,
+    learnTrial,
+    inviteCode,
+    paid,
+  }),
+  mapping
 );
 
 /**
