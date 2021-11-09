@@ -44,7 +44,7 @@ export const checkInUse = async (
   return false;
 };
 
-export const generateRecord = async (body = null) => {
+export const generateRecord = async (body = null, isMapping = false) => {
   const {
     timeTable,
     courseDetail,
@@ -76,21 +76,34 @@ export const generateRecord = async (body = null) => {
         recordDate >=
           moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
       ) {
-        if (!learnTrial) {
-          records.push({
-            status:
-              completedRecord && completedRecord >= records.length ? -1 : null,
+        const exitedRecords = await Record.find({
+          recordDate,
+          teacherId,
+          status: { $ne: 0 },
+        }).lean();
+        if (exitedRecords.length === 0) {
+          // Bỏ qua nếu đã có buổi học với ngày, giáo viên được tạo
+          if (!learnTrial) {
+            // Nếu trong order có buổi học thì thì + thêm 1 buổi học
+            records.push({
+              status:
+                isMapping &&
+                completedRecord &&
+                completedRecord >= records.length
+                  ? -1
+                  : null,
 
-            recordDate: recordDate.unix(),
-            timeTable: element,
-            teacherId,
-            studentId,
-            parentId,
-            courseId,
-            orderId: _id || id,
-          });
-        } else {
-          learnTrial = false;
+              recordDate: recordDate.unix(),
+              timeTable: element,
+              teacherId,
+              studentId,
+              parentId,
+              courseId,
+              orderId: _id || id,
+            });
+          } else {
+            learnTrial = false;
+          }
         }
       }
     }
@@ -135,16 +148,24 @@ export const generateRecordWithNumber = async (
         recordDate >=
           moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
       ) {
-        records.push({
-          status: null,
-          recordDate: recordDate.unix(),
-          timeTable: element,
+        const exitedRecords = await Record.find({
+          recordDate,
           teacherId,
-          studentId,
-          parentId,
-          courseId,
-          orderId: _id || id,
-        });
+          status: { $ne: 0 },
+        }).lean();
+        if (exitedRecords.length === 0) {
+          // Bỏ qua nếu đã có buổi học với ngày, giáo viên được tạo (buổi học tạm thời)
+          records.push({
+            status: null,
+            recordDate: recordDate.unix(),
+            timeTable: element,
+            teacherId,
+            studentId,
+            parentId,
+            courseId,
+            orderId: _id || id,
+          });
+        }
       }
     }
     week++;

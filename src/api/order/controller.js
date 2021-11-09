@@ -52,12 +52,12 @@ export const mapping = async ({ body }, res, next) => {
     body.courseDetail = { price, lessons, name, title, _id };
     body._id = new objectId();
     const checkSlotsResult = await checkDuplicateTimeTable(body);
-
+    console.log(checkSlotsResult);
     // await Record.insertMany(records);
     if (checkSlotsResult.length === 0) {
       return Order.create(body)
         .then(async (order) => {
-          const records = await generateRecord(body);
+          const records = await generateRecord(body, true);
           await Record.insertMany(records);
           console.log(records);
           return order.view(true);
@@ -429,6 +429,6 @@ export const checkDuplicateTimeTable = async (body) => {
     lodash.flatten(orders.map((item) => item.timeTable)),
     (e) => JSON.stringify(e)
   );
-  console.log(unavailableSlots, "compare", timeTable);
+
   return lodash.intersectionWith(unavailableSlots, timeTable, lodash.isEqual);
 };

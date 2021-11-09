@@ -7,6 +7,8 @@ const recordSchema = new Schema(
       type: Number,
       // 1: hoan thanh, 2: giao vien nghi dung quy dinh, 3: hoc sinh nghi dung quy dinh,
       // 4: giao vien nghi khong dung quy dinh, 5: hoc sinh nghi khong dung quy dinh
+      // -1: Không xác định
+      // 0: Đã xoá
     },
     recordDate: {
       type: Number,
@@ -54,6 +56,9 @@ const recordSchema = new Schema(
     },
     logs: {
       type: Array,
+    },
+    tempStudentName: {
+      type: String,
     },
   },
   {

@@ -33,7 +33,6 @@ export const increase = async ({ bodymen: { body } }, res, next) => {
 };
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) => {
-  console.log("query", query, cursor);
   return Record.count(query)
     .then((count) =>
       Record.find(query, select, cursor)
@@ -155,6 +154,7 @@ export const takeLeave = (
       if (!data || data.length === 0) {
         return res.status(400).json({ message: "No classes in time range!" });
       }
+
       return Record.updateMany(
         { ...restQuery, status: null },
         {
