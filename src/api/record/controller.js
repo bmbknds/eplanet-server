@@ -6,6 +6,7 @@ import { Order } from "../order";
 import { pickBy, identity } from "lodash";
 import moment from "moment";
 import { CLASS_STATUS } from "../constants/index";
+import { generateRecordWithNumber } from "../../utils";
 
 export const create = ({ bodymen: { body } }, res, next) =>
   Record.create(body)
@@ -144,7 +145,7 @@ export const report = async (
 export const takeLeave = async (
   {
     bodymen: {
-      body: { records },
+      body: { records, noMakeUp },
     },
     user,
   },
@@ -159,7 +160,7 @@ export const takeLeave = async (
     for await (const record of records) {
       await Record.findById(record.id)
         .then(notFound(res))
-        .then((result) => {
+        .then(async (result) => {
           result.status = record.status;
           result.logs = [
             ...result.logs,
@@ -171,11 +172,33 @@ export const takeLeave = async (
               createdAt: moment().unix(),
             },
           ];
-          result.save();
+          await result.save();
+          return result;
+        })
+        .then(async (takeLeaveRecord) => {
+          if (takeLeaveRecord.status === CLASS_STATUS.INVALID_BY_STUDENT) {
+            return;
+          }
+          if (!noMakeUp) {
+            const lastRecord = await Record.findOne({
+              orderId: takeLeaveRecord.orderId,
+            }).sort({ recordDate: -1 });
+            const order = await Order.findById(lastRecord.orderId).lean();
+
+            const makeUpRecord = await generateRecordWithNumber(
+              order,
+              1,
+              lastRecord.recordDate
+            );
+
+            await Record.insertMany(makeUpRecord);
+          }
+          // console.log(takeLeaveRecord);
         });
     }
     res.status(200).end();
   } catch (err) {
+    console.log(err);
     res.status(500).end();
   }
 };
@@ -185,6 +208,16 @@ export const getTakeLeaveRecords = (
   next
 ) => {
   Record.find({ ...query, status: null })
+    .populate([
+      {
+        path: "student",
+        select: "studentName",
+      },
+      {
+        path: "teacher",
+        select: "name",
+      },
+    ])
     .then(success(res))
     .catch(next);
 };

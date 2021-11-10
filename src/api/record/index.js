@@ -160,6 +160,10 @@ router.post(
     records: {
       require: true,
     },
+
+    noMakeUp: {
+      type: Boolean,
+    },
   }),
   takeLeave
 );

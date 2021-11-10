@@ -102,6 +102,18 @@ recordSchema.virtual("student", {
   foreignField: "_id",
   justOne: true,
 });
+recordSchema.virtual("course", {
+  ref: "Course",
+  localField: "courseId",
+  foreignField: "_id",
+  justOne: true,
+});
+recordSchema.virtual("teacher", {
+  ref: "User",
+  localField: "teacherId",
+  foreignField: "_id",
+  justOne: true,
+});
 recordSchema.index({ teacherId: 1, studentId: 1, courseId: 1, orderId: 1 });
 const model = mongoose.model("Record", recordSchema);
 

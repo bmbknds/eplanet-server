@@ -116,9 +116,11 @@ export const generateRecordWithNumber = async (
   quantity = null,
   unixStartDate = null
 ) => {
-  if (!unixStartDate || quantity) {
+  // console.log(quantity, unixStartDate, "param");
+  if (!unixStartDate || !quantity) {
     return null;
   }
+
   const {
     timeTable,
     courseDetail,
@@ -130,13 +132,17 @@ export const generateRecordWithNumber = async (
     id,
   } = body;
   const orderID = new objectId();
-  const startDate = moment.unix(unixStartDate).format("DD/MM/YYYY");
+  const startDate = moment
+    .unix(unixStartDate)
+    // .add(1, "d")
+    .startOf("day")
+    .format("DD/MM/YYYY");
   let week = 0;
   const records = [];
-
+  const sortTimeTable = timeTable.sort((a, b) => a.day - b.day);
   do {
-    for (let index = 0; index < timeTable.length; index++) {
-      const element = timeTable[index];
+    for (let index = 0; index < sortTimeTable.length; index++) {
+      const element = sortTimeTable[index];
 
       const recordDate = moment(
         `${startDate} ${element.slot.startTime}`,
@@ -149,10 +155,11 @@ export const generateRecordWithNumber = async (
           moment(`${startDate} ${element.slot.startTime}`, "DD/MM/YYYY HH:mm")
       ) {
         const exitedRecords = await Record.find({
-          recordDate,
+          recordDate: recordDate.unix(),
           teacherId,
-          status: { $ne: 0 },
+          status: { $in: [0, null] },
         }).lean();
+
         if (exitedRecords.length === 0) {
           // Bỏ qua nếu đã có buổi học với ngày, giáo viên được tạo (buổi học tạm thời)
           records.push({
