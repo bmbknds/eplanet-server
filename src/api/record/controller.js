@@ -141,44 +141,43 @@ export const report = async (
     .catch(next);
 };
 
-export const takeLeave = (
-  { querymen: { query, select, cursor } },
+export const takeLeave = async (
+  {
+    bodymen: {
+      body: { records },
+    },
+    user,
+  },
   res,
   next
 ) => {
-  const { reason, ...restQuery } = query;
-  // console.log(query);
-  Record.find({ ...restQuery, status: null })
-    .then((data) => {
-      console.log(data);
-      if (!data || data.length === 0) {
-        return res.status(400).json({ message: "No classes in time range!" });
-      }
+  try {
+    if (records?.length === 0) {
+      return res.status(400).end();
+    }
 
-      return Record.updateMany(
-        { ...restQuery, status: null },
-        {
-          $push: {
-            logs: {
-              teacherId: restQuery.teacherId,
-              studentId: restQuery.studentId,
-              role: restQuery.teacherId ? "teacher" : "student",
-              reason,
+    for await (const record of records) {
+      await Record.findById(record.id)
+        .then(notFound(res))
+        .then((result) => {
+          result.status = record.status;
+          result.logs = [
+            ...result.logs,
+            {
+              teacherId: user.role === "teacher" ? user._id : null,
+              studentId: user.role === "student" ? user._id : null,
+              role: user.role,
+              reason: record.reason,
               createdAt: moment().unix(),
             },
-          },
-        }
-      );
-    })
-
-    .then((result) => {
-      if (result.n === result.nModified) {
-        return res.status(201).end();
-      } else {
-        return res.status(500).json({ message: "Something went wrong" }).end();
-      }
-    })
-    .catch(next);
+          ];
+          result.save();
+        });
+    }
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
 };
 export const getTakeLeaveRecords = (
   { querymen: { query, select, cursor } },

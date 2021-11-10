@@ -153,29 +153,12 @@ router.get(
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Record not found.
  */
-router.get(
+router.post(
   "/take-leave",
   token({ required: true }),
-  query({
-    from: {
-      type: Number,
-      paths: ["recordDate"],
-      operator: "$gte",
-    },
-    to: {
-      type: Number,
-      paths: ["recordDate"],
-      operator: "$lte",
-    },
-    reason: {
-      type: String,
-    },
-
-    teacherId: {
-      type: String,
-    },
-    studentId: {
-      type: String,
+  body({
+    records: {
+      require: true,
     },
   }),
   takeLeave
@@ -194,6 +177,13 @@ router.get(
       paths: ["recordDate"],
       operator: "$lte",
     },
+    teacherId: {
+      type: String,
+    },
+    studentId: {
+      type: String,
+    },
+    status,
   }),
   getTakeLeaveRecords
 );

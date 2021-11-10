@@ -45,7 +45,11 @@ const orderSchema = new Schema(
 
     logs: [
       {
-        action: { type: String, enum: ["charge", "close"], require: true },
+        action: {
+          type: String,
+          enum: ["charge", "close", "add-periodic", "cancel-periodic"],
+          require: true,
+        },
         date: {
           type: Date,
           require: true,
