@@ -14,8 +14,6 @@ export const checkInUse = async (
   value = null,
   extraConditions = null
 ) => {
-  //   console.log("util", collections);
-
   for (let index = 0; index < collections.length; index++) {
     const element = collections[index];
     const filter = {};
@@ -23,24 +21,12 @@ export const checkInUse = async (
       filter[field.name] = field.value;
     });
     const existed = await models[element.name].findOne(filter);
-    console.log(filter);
+
     if (existed) {
       return true;
     }
   }
-  //   const result = await collections.forEach(async (item) => {
-  //     const filter = {};
-  //   item.fields.forEach((field) => {
-  //       filter[field.name] = field.value;
-  //     });
-  //     // filter[item.field] = value;
-  //     const existed = await models[item.name].findOne(filter);
-  //     console.log(existed);
-  //     if (existed) {
-  //       return true;
-  //     }
-  //   });
-  //   console.log(result, "util");
+
   return false;
 };
 
@@ -79,7 +65,7 @@ export const generateRecord = async (body = null, isMapping = false) => {
         const exitedRecords = await Record.find({
           recordDate,
           teacherId,
-          status: { $ne: 0 },
+          status: { $in: [0, null] },
         }).lean();
         if (exitedRecords.length === 0) {
           // Bỏ qua nếu đã có buổi học với ngày, giáo viên được tạo
@@ -114,7 +100,8 @@ export const generateRecord = async (body = null, isMapping = false) => {
 export const generateRecordWithNumber = async (
   body,
   quantity = null,
-  unixStartDate = null
+  unixStartDate = null,
+  recordId = null
 ) => {
   // console.log(quantity, unixStartDate, "param");
   if (!unixStartDate || !quantity) {
@@ -170,6 +157,7 @@ export const generateRecordWithNumber = async (
             studentId,
             parentId,
             courseId,
+            makeUpOf: recordId,
             orderId: _id || id,
           });
         }

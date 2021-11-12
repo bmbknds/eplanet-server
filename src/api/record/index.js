@@ -23,8 +23,21 @@ import {
 export Record, { schema } from "./model";
 
 const router = new Router();
-const { status, studentComment, teacherComment, teacherId, studentId, kind } =
-  schema.tree;
+const {
+  status,
+  studentComment,
+  teacherComment,
+  teacherId,
+  studentId,
+  kind,
+  courseId,
+  orderId,
+  parentId,
+  recordDate,
+
+  timeTable,
+  trialDetail,
+} = schema.tree;
 
 /**
  * @api {post} /records Create record
@@ -43,7 +56,19 @@ router.post(
     required: true,
     roles: ["admin", "super-admin", "teacher"],
   }),
-  body({ status, studentComment, teacherComment }),
+  body({
+    courseId,
+    orderId: {
+      type: String,
+    },
+    parentId,
+    studentId,
+    teacherId,
+    kind,
+    recordDate,
+    timeTable,
+    trialDetail,
+  }),
   create
 );
 

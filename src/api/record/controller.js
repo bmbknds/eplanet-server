@@ -8,11 +8,20 @@ import moment from "moment";
 import { CLASS_STATUS } from "../constants/index";
 import { generateRecordWithNumber } from "../../utils";
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  Record.create(body)
+export const create = async ({ bodymen: { body } }, res, next) => {
+  const { teacherId, studentId, courseId } = body;
+  let order = null;
+  if (body.kind === "TEMP") {
+    order = await Order.findOne({ teacherId, studentId, courseId }).lean();
+    if (!order) {
+      res.status(404).json({ message: "No order match" });
+    }
+  }
+  return Record.create({ ...body, orderId: order?._id || "TRIAL_ORDER" })
     .then((record) => record.view(true))
     .then(success(res, 201))
     .catch(next);
+};
 
 export const increase = async ({ bodymen: { body } }, res, next) => {
   const { quantity, orderId, kind } = body;
@@ -64,27 +73,28 @@ export const submitReport = ({ bodymen: { body }, params, user }, res, next) =>
           .json({ message: "Can not find the record!" })
           .end();
       } else {
-        if (body.status === 0) {
-          record.status = CLASS_STATUS.FINISH;
-        } else {
-          if (body.status === 1) {
-            const leaveLog = record.logs.find((d) => d.role === "teacher");
-            if (leaveLog && record.recordDate - leaveLog.createdAt >= 21600) {
-              record.status = CLASS_STATUS.VALID_BY_TEACHER;
-            } else {
-              record.status = CLASS_STATUS.INVALID_BY_TEACHER;
-            }
-          }
-          if (body.status === 3) {
-            const leaveLog = record.logs.find((d) => d.role === "student");
-            if (leaveLog && record.recordDate - leaveLog.createdAt >= 1800) {
-              record.status = CLASS_STATUS.VALID_BY_STUDENT;
-            } else {
-              record.status = CLASS_STATUS.INVALID_BY_STUDENT;
-            }
-          }
-        }
-        delete body.status;
+        // if (body.status === 0) {
+        //   record.status = CLASS_STATUS.FINISH;
+        // } else {
+        //   if (body.status === 1) {
+        //     const leaveLog = record.logs.find((d) => d.role === "teacher");
+        //     if (leaveLog && record.recordDate - leaveLog.createdAt >= 21600) {
+        //       record.status = CLASS_STATUS.VALID_BY_TEACHER;
+        //     } else {
+        //       record.status = CLASS_STATUS.INVALID_BY_TEACHER;
+        //     }
+        //   }
+        //   if (body.status === 3) {
+        //     const leaveLog = record.logs.find((d) => d.role === "student");
+        //     if (leaveLog && record.recordDate - leaveLog.createdAt >= 1800) {
+        //       record.status = CLASS_STATUS.VALID_BY_STUDENT;
+        //     } else {
+        //       record.status = CLASS_STATUS.INVALID_BY_STUDENT;
+        //     }
+        //   }
+        // }
+        // delete body.status;
+        // record.status = body.status;
         record.logs.push({
           teacherId: user._id,
           action: "report",
@@ -188,7 +198,8 @@ export const takeLeave = async (
             const makeUpRecord = await generateRecordWithNumber(
               order,
               1,
-              lastRecord.recordDate
+              lastRecord.recordDate,
+              takeLeaveRecord.orderId
             );
 
             await Record.insertMany(makeUpRecord);

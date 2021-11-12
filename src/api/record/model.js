@@ -57,8 +57,15 @@ const recordSchema = new Schema(
     logs: {
       type: Array,
     },
-    tempStudentName: {
+    makeUpOf: {
       type: String,
+    },
+    trialDetail: {
+      customerExpected: { type: String },
+      documentExpected: {
+        type: Object,
+      },
+      note: { type: String },
     },
   },
   {
