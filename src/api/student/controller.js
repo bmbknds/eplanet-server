@@ -74,9 +74,7 @@ const createChild = async (parentId, child) => {
   });
 };
 
-export const importStudent = async (item) => {
-  const importTime = moment().format("DD/MM/YYYY HH:mm:ss");
-  console.log(importTime);
+export const importStudent = async (item, importTime = null) => {
   if (item.parentEmail || item.phoneNumber) {
     //check parent existed
 
@@ -120,9 +118,11 @@ export const importStudent = async (item) => {
 
 export const importData = async ({ body }, res, next) => {
   const _data = body.data;
+  const importTime = moment().format("DD/MM/YYYY HH:mm:ss");
+  console.log(importTime);
   try {
     for await (const student of _data) {
-      await importStudent(student);
+      await importStudent(student, importTime);
     }
     return res.status(200).json({
       status: 1,
