@@ -1,6 +1,7 @@
 import { success, notFound } from "../../services/response/";
 import { Student } from ".";
 import { User } from "../user";
+import moment from "moment";
 
 export const create = ({ bodymen: { body } }, res, next) =>
   Student.create(body)
@@ -74,6 +75,8 @@ const createChild = async (parentId, child) => {
 };
 
 export const importStudent = async (item) => {
+  const importTime = moment().format("DD/MM/YYYY HH:mm:ss");
+  console.log(importTime);
   if (item.parentEmail || item.phoneNumber) {
     //check parent existed
 
@@ -95,6 +98,7 @@ export const importStudent = async (item) => {
         password: "123456",
         phoneNumber: item.parentTel,
         gender: item.parentGender,
+        importTime,
       });
       parentId = parentCreated._id;
     }
@@ -108,6 +112,7 @@ export const importStudent = async (item) => {
       skype: item.skype,
       facebook: item.facebook,
       note: item.note,
+      importTime,
     });
     return;
   }

@@ -31,6 +31,9 @@ const studentSchema = new Schema(
     facebook: {
       type: String,
     },
+    importTime: {
+      type: String,
+    },
   },
   {
     timestamps: true,

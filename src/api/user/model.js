@@ -84,6 +84,9 @@ const userSchema = new Schema(
     gender: {
       type: String,
     },
+    importTime: {
+      type: String,
+    },
   },
   {
     timestamps: true,
